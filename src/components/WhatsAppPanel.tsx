@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = '919999999999';
+const WHATSAPP_NUMBER = '917981041123';
 const DEFAULT_MESSAGE = 'Hello KKC, I want to know more about devotional events and astrology services.';
 
 function WhatsAppPanel() {
