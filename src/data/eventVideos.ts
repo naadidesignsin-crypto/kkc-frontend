@@ -1,44 +1,67 @@
+const videoModules = import.meta.glob<string>(
+  "../assets/videos/*.{mp4,webm}",
+  {
+    eager: true,
+    import: "default",
+  }
+);
+
 export type EventVideo = {
   id: string;
   title: string;
+  description: string;
   source: string;
-  fileName: string;
   type: string;
 };
 
-const videoModules = import.meta.glob<string>("../assets/videos/*.{mp4,webm}", {
-  eager: true,
-  import: "default",
-});
+const videoTitles = [
+  {
+    title: "KKC Spiritual Gathering",
+    description:
+      "A sacred glimpse of devotional participation, prayer, guidance, and community connection.",
+  },
+  {
+    title: "Gau Seva Highlights",
+    description:
+      "Moments from seva activities dedicated to care, contribution, and dharmic support.",
+  },
+  {
+    title: "Kundalini Kriya Session",
+    description:
+      "Highlights from guided kriya practice focused on discipline, awareness, and inner transformation.",
+  },
+  {
+    title: "Astrology Guidance Moments",
+    description:
+      "Selected moments from astrology guidance sessions focused on clarity, timing, and personal direction.",
+  },
+  {
+    title: "Devotional Satsang",
+    description:
+      "A devotional gathering with prayer, reflection, guidance, and spiritual participation.",
+  },
+  {
+    title: "Sacred Event Highlights",
+    description:
+      "Captured moments from KKC spiritual programs, seva initiatives, and devotional events.",
+  },
+];
 
-function formatVideoTitle(path: string, index: number) {
-  const fileName = path.split("/").pop() || `event-video-${index + 1}`;
-  const nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
-
-  const cleaned = nameWithoutExt
-    .replace(/^\d+[-_\s]*/, "")
-    .replace(/[-_]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  if (!cleaned) {
-    return `Event Video ${index + 1}`;
-  }
-
-  return cleaned.replace(/\b\w/g, (char) => char.toUpperCase());
-}
-
-export const eventVideos: EventVideo[] = Object.entries(videoModules)
-  .sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
-  .map(([path, source], index) => {
-    const fileName = path.split("/").pop() || `event-video-${index + 1}.mp4`;
-    const ext = fileName.split(".").pop()?.toLowerCase() || "mp4";
+export const eventVideos: EventVideo[] = Object.entries(videoModules).map(
+  ([path, source], index) => {
+    const extension = path.split(".").pop()?.toLowerCase();
+    const content = videoTitles[index] ?? {
+      title: `KKC Event Highlight ${index + 1}`,
+      description:
+        "A selected moment from KKC devotional events, seva activities, and spiritual programs.",
+    };
 
     return {
-      id: `${index + 1}-${fileName}`,
-      title: formatVideoTitle(path, index),
+      id: `event-video-${index + 1}`,
+      title: content.title,
+      description: content.description,
       source,
-      fileName,
-      type: ext === "webm" ? "video/webm" : "video/mp4",
+      type: extension === "webm" ? "video/webm" : "video/mp4",
     };
-  });
+  }
+);
