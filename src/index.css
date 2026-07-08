@@ -1430,3 +1430,105 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================
+   CLIENT REQUEST: WHITE FONT
+========================= */
+
+:root {
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.82);
+  --gold-light: #ffffff;
+}
+
+/* Main readable content */
+body,
+h1,
+h2,
+h3,
+p,
+span,
+label,
+input,
+select,
+textarea,
+button,
+a {
+  color: #ffffff;
+}
+
+/* Paragraphs and descriptions */
+.hero-copy,
+.contact-copy,
+.info-card p,
+.section-heading h2 + p,
+.event-content p,
+.event-card p,
+.contact-form label {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+.section-heading h2,
+.event-content h3,
+.info-card h3,
+.contact-card h2 {
+  color: #ffffff;
+}
+
+/* Navbar */
+.brand-text,
+.nav-links a,
+.nav-link,
+.nav-links .nav-link {
+  color: #ffffff;
+}
+
+/* Keep small section labels gold for premium look */
+.eyebrow {
+  color: var(--gold);
+}
+
+/* Keep primary button text readable */
+.primary-btn,
+.full-btn {
+  color: #160d02;
+}
+
+/* Keep secondary button text white */
+.secondary-btn {
+  color: #ffffff;
+}
+
+/* Form placeholders */
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+/* Select dropdown text */
+.contact-form select {
+  color: #ffffff;
+}
+
+.contact-form option {
+  color: #111111;
+  background: #ffffff;
+}
+
+/* Planet and event labels */
+.planet-card,
+.planet-card span,
+.event-content,
+.event-content span {
+  color: #ffffff;
+}
+
+/* WhatsApp button remains readable */
+.whatsapp-panel,
+.whatsapp-panel span {
+  color: #ffffff;
+}
