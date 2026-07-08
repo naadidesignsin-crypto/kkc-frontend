@@ -1,15 +1,21 @@
+import logo from '../assets/Logo.png';
+
 const navItems = [
   { label: 'Home', href: '#home' },
   { label: 'Events', href: '#events' },
   { label: 'Astrology', href: '#services' },
-  { label: 'Contact', href: '#contact' }
+  { label: 'Contact', href: '#contact' },
 ];
 
-function Navbar() {
+export default function Navbar() {
   return (
     <header className="navbar">
-      <a href="#home" className="brand" aria-label="KKC home">
-        <span className="brand-mark">KKC</span>
+      <a className="brand" href="#home" aria-label="KKC home">
+        <img
+          src={logo}
+          alt="Kundalini Kriya Chaitanyam logo"
+          className="brand-logo"
+        />
         <span className="brand-text">Kundalini Kriya Chaitanyam</span>
       </a>
 
@@ -23,5 +29,3 @@ function Navbar() {
     </header>
   );
 }
-
-export default Navbar;
