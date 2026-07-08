@@ -7,7 +7,7 @@ interface ChatMessage {
   text: string;
 }
 
-const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || "917981041123";
+const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || "919999999999";
 
 function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +16,8 @@ function ChatBot() {
     {
       id: 1,
       role: "BOT",
-      text: "Namaste. I can help with donations, upcoming events, astrology consultation, Gau Seva, and contact details.",
+      text:
+        "Namaste. I can help you with KKC events, seva contributions, astrology consultation, video highlights, and contact support.",
     },
   ]);
 
@@ -28,14 +29,25 @@ function ChatBot() {
 
   function sendMessage(message: string) {
     const cleanMessage = message.trim();
-    if (!cleanMessage) return;
+
+    if (!cleanMessage) {
+      return;
+    }
 
     const faq = findFaqAnswer(cleanMessage);
 
     setMessages((current) => [
       ...current,
-      { id: Date.now(), role: "USER", text: cleanMessage },
-      { id: Date.now() + 1, role: "BOT", text: faq.answer },
+      {
+        id: Date.now(),
+        role: "USER",
+        text: cleanMessage,
+      },
+      {
+        id: Date.now() + 1,
+        role: "BOT",
+        text: faq.answer,
+      },
     ]);
 
     setInput("");
@@ -52,20 +64,22 @@ function ChatBot() {
 
   return (
     <>
-      <button
-        className="chatbot-launcher"
-        onClick={() => setIsOpen((current) => !current)}
-        type="button"
-        aria-label={isOpen ? "Close KKC Assistant" : "Open KKC Assistant"}
-      >
-        {isOpen ? "×" : "Chat"}
-      </button>
+      {!isOpen && (
+        <button
+          className="chatbot-launcher"
+          onClick={() => setIsOpen(true)}
+          type="button"
+          aria-label="Open KKC Seva Assistant"
+        >
+          Chat
+        </button>
+      )}
 
       {isOpen && (
-        <aside className="chatbot-panel" aria-label="KKC Assistant">
+        <aside className="chatbot-panel" aria-label="KKC Seva Assistant">
           <div className="chatbot-header">
             <div>
-              <p className="eyebrow">KKC Assistant</p>
+              <p className="eyebrow">KKC Seva Assistant</p>
               <h3>How can we help?</h3>
             </div>
 
@@ -104,6 +118,7 @@ function ChatBot() {
                 {message.text}
               </div>
             ))}
+
             <div ref={messagesEndRef} />
           </div>
 
@@ -111,9 +126,10 @@ function ChatBot() {
             <input
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Ask about donation, events, astrology..."
-              aria-label="Ask KKC Assistant"
+              placeholder="Ask about seva, events, astrology..."
+              aria-label="Ask KKC Seva Assistant"
             />
+
             <button type="submit">Send</button>
           </form>
 
