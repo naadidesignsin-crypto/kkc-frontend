@@ -6,6 +6,8 @@ import Events from './components/Events';
 import Services from './components/Services';
 import Contact from './components/Contact';
 import WhatsAppPanel from './components/WhatsAppPanel';
+import ChatBot from "./components/ChatBot";
+import VideoGallery from "./components/VideoGallery";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
       <Services />
       <Contact />
       <WhatsAppPanel />
+      <ChatBot />
+      <VideoGallery />
     </main>
   );
 }
