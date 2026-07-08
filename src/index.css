@@ -722,3 +722,394 @@ h3 {
     min-height: 220px;
   }
 }
+
+/* =========================================================
+   KKC ONGOING EVENT + DONATION UPDATE
+   Add this at the END of src/index.css
+========================================================= */
+
+.hero {
+  display: grid;
+  min-height: calc(100vh - 88px);
+  align-items: center;
+  padding: 56px 0 80px;
+}
+
+.hero-feature-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+  gap: clamp(28px, 5vw, 58px);
+  align-items: center;
+  padding: clamp(26px, 5vw, 54px);
+}
+
+.hero-text-content {
+  min-width: 0;
+}
+
+.hero-text-content h1 {
+  max-width: 680px;
+  margin-bottom: 20px;
+}
+
+.hero-media-panel {
+  position: relative;
+  min-width: 0;
+}
+
+.ongoing-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 3;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 226, 161, 0.52);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.72);
+  color: var(--gold-light);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
+}
+
+.hero-event-image-wrap {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(217, 173, 87, 0.32);
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.72);
+  box-shadow:
+    0 28px 86px rgba(0, 0, 0, 0.58),
+    0 0 42px rgba(217, 173, 87, 0.14);
+}
+
+.hero-event-image-wrap::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 42%, rgba(0, 0, 0, 0.82)),
+    radial-gradient(circle at top right, rgba(217, 173, 87, 0.2), transparent 36%);
+}
+
+.hero-event-image {
+  display: block;
+  width: 100%;
+  height: clamp(300px, 42vw, 520px);
+  object-fit: cover;
+  transform: scale(1.01);
+}
+
+.hero-media-overlay {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  z-index: 2;
+  display: grid;
+  gap: 6px;
+}
+
+.hero-media-overlay span {
+  color: var(--gold);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-media-overlay strong {
+  color: var(--gold-light);
+  font-size: clamp(1.2rem, 2.4vw, 2rem);
+  line-height: 1.1;
+}
+
+.donation-btn {
+  background: linear-gradient(135deg, #ffe2a1, #d9ad57 58%, #b97924);
+  color: #130b02;
+}
+
+.donation-btn:hover {
+  box-shadow:
+    0 18px 48px rgba(217, 173, 87, 0.28),
+    0 0 28px rgba(255, 226, 161, 0.18);
+}
+
+.ongoing-event-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  gap: clamp(24px, 4vw, 44px);
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(18px, 3vw, 28px);
+}
+
+.ongoing-event-media {
+  overflow: hidden;
+  border: 1px solid rgba(217, 173, 87, 0.3);
+  border-radius: 26px;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.ongoing-event-media img {
+  display: block;
+  width: 100%;
+  height: clamp(260px, 36vw, 430px);
+  object-fit: cover;
+}
+
+.ongoing-event-content {
+  padding: clamp(6px, 2vw, 18px);
+}
+
+.ongoing-event-content h3 {
+  margin-bottom: 14px;
+  color: var(--gold-light);
+  font-size: clamp(1.8rem, 3.4vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.ongoing-event-content p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 1.04rem;
+  line-height: 1.75;
+}
+
+.ongoing-event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+@media (max-width: 1024px) {
+  .hero-feature-grid,
+  .ongoing-event-card {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-event-image,
+  .ongoing-event-media img {
+    height: clamp(280px, 58vw, 460px);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-feature-grid {
+    padding: 24px;
+    border-radius: 26px;
+  }
+
+  .hero-text-content h1 {
+    font-size: clamp(2.45rem, 13vw, 4.1rem);
+  }
+
+  .hero-event-image,
+  .ongoing-event-media img {
+    height: 280px;
+  }
+
+  .ongoing-event-actions {
+    flex-direction: column;
+  }
+
+  .ongoing-event-actions .primary-btn,
+  .ongoing-event-actions .secondary-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-feature-grid,
+  .ongoing-event-card {
+    padding: 18px;
+  }
+
+  .hero-event-image,
+  .ongoing-event-media img {
+    height: 240px;
+  }
+
+  .hero-media-overlay {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* =========================================================
+   KKC UPCOMING EVENTS SLIDER UPDATE
+   Paste this at the END of src/index.css
+========================================================= */
+
+.events-section .section-heading h2 {
+  max-width: 760px;
+}
+
+.upcoming-slider-card {
+  position: relative;
+}
+
+.event-slide-image-wrap {
+  position: relative;
+}
+
+.event-slide-image-wrap::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 48%, rgba(0, 0, 0, 0.7)),
+    radial-gradient(circle at top left, rgba(255, 226, 161, 0.16), transparent 34%);
+}
+
+.event-slide-image {
+  display: block;
+  width: 100%;
+  height: clamp(280px, 36vw, 460px);
+  object-fit: cover;
+  animation: eventImageFade 420ms ease both;
+}
+
+.event-slide-counter {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2;
+  padding: 8px 13px;
+  border: 1px solid rgba(255, 226, 161, 0.42);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.68);
+  color: var(--gold-light);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.event-slide-content h3 {
+  animation: eventTextFade 360ms ease both;
+}
+
+.event-slide-content p:not(.eyebrow) {
+  animation: eventTextFade 420ms ease both;
+}
+
+.event-slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(217, 173, 87, 0.2);
+}
+
+.event-slider-btn {
+  min-width: 84px;
+  min-height: 40px;
+  border: 1px solid rgba(217, 173, 87, 0.34);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.34);
+  color: var(--gold-light);
+  font-size: 0.82rem;
+  font-weight: 900;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.event-slider-btn:hover,
+.event-slider-btn:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 226, 161, 0.58);
+  background: rgba(217, 173, 87, 0.12);
+  outline: none;
+}
+
+.event-slider-dots {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.event-dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 1px solid rgba(255, 226, 161, 0.42);
+  border-radius: 50%;
+  background: rgba(217, 173, 87, 0.18);
+  transition:
+    width 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.event-dot.active {
+  width: 30px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffe2a1, #d9ad57);
+  border-color: rgba(255, 226, 161, 0.72);
+}
+
+@keyframes eventImageFade {
+  from {
+    opacity: 0.66;
+    transform: scale(1.025);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes eventTextFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 760px) {
+  .event-slider-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .event-slider-btn {
+    width: 100%;
+  }
+
+  .event-slider-dots {
+    order: -1;
+    min-height: 24px;
+  }
+
+  .event-slide-image {
+    height: 280px;
+  }
+}
+
+@media (max-width: 420px) {
+  .event-slide-image {
+    height: 230px;
+  }
+
+  .event-slide-counter {
+    right: 14px;
+    bottom: 14px;
+  }
+}
