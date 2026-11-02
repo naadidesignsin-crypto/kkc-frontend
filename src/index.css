@@ -2570,3 +2570,7 @@ h3,
  .registration-records-body { padding:0 18px 18px; }
  .registration-toolbar { align-items:stretch; flex-direction:column; }
 }
+
+.registration-export-actions { display:flex; gap:12px; flex-wrap:wrap; }
+.registration-online p { color:var(--muted); line-height:1.6; }
+@media(max-width:760px){ .registration-export-actions { flex-direction:column; } }
