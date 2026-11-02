@@ -25,3 +25,13 @@ Local visual previews (no submissions):
 - http://localhost:5173/registration-preview/telugu
 
 Validated: desktop/mobile/small-mobile widths, original logo bytes, all four prices, bilingual state retention, fixed navigation, paid acknowledgement display, canonical server amounts, duplicate request caching, idempotent fields, grouped report totals and missing legacy amounts. Tests used mocked Google services and did not send real responses.
+
+## Desktop screen-fit layout
+
+The desktop poster viewer now uses the available viewport height. The main invitation uses readable two/three-column text according to screen width; the programme image and date cards fit side by side. All six original Telugu paragraphs and all schedule dates are retained.
+
+Registration uses side-by-side personal/optional details, QR/payment information, and compact review rows. Address/note can be expanded without needing to scroll on the desktop sizes tested. Footer navigation stays visible. Mobile keeps its readable single-column layout and natural scrolling; zoomed or unusually small windows can still scroll rather than losing content.
+
+Verified no vertical or horizontal overflow in all three poster views and all four form steps at 1366x768, 1280x720, 1536x864, 1024x768 and 1280x650. Telugu labels were checked at three sizes, and the actual parent popup with a locally mocked Google iframe was checked at 1366x768 and 1280x650. No real registrations/payments were submitted.
+
+Deploy the frontend CSS through Vercel. For the Google-hosted form, replace only the Registration HTML file with the updated integrations/Registration.html and deploy a New version of the existing web app. This layout update does not change Code.gs, payment values, response destinations, or existing registrations.

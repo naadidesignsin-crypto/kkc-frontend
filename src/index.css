@@ -2764,3 +2764,65 @@ h3,
 /* Wider registration matches the available desktop space. */
 .registration-dialog--embedded{width:min(1120px,calc(100vw - 32px));height:calc(100dvh - 32px);max-height:calc(100dvh - 32px)}
 @media(max-width:760px){.registration-dialog--embedded{width:100%;height:calc(100dvh - 12px);max-height:calc(100dvh - 12px)}}
+
+/* Fit desktop programme views to the available viewport. */
+@media(min-width:1024px){
+ .karthika-posters--compact .karthika-viewer-scroll{display:flex;flex-direction:column}
+ .karthika-posters--compact .karthika-main-invitation{flex:1;padding:12px 22px 8px;max-width:none}
+ .karthika-posters--compact .karthika-main-heading{grid-template-columns:132px minmax(0,1fr) 48px;gap:16px;padding-bottom:10px}
+ .karthika-posters--compact .karthika-main-heading .karthika-abhishekam-image{width:132px;height:88px}
+ .karthika-posters--compact .karthika-main-heading h3{font-size:30px;line-height:1.35;margin:5px 0}
+ .karthika-posters--compact .karthika-main-brand{font-size:10px}
+ .karthika-posters--compact .karthika-main-year{font-size:11px}
+ .karthika-posters--compact .karthika-main-om{font-size:36px}
+ .karthika-posters--compact .karthika-main-copy{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:22px}
+ .karthika-posters--compact .karthika-main-paragraph{padding:12px 0;gap:8px}
+ .karthika-posters--compact .karthika-main-number{flex-basis:18px;font-size:10px}
+ .karthika-posters--compact .karthika-main-paragraph p{font-size:17px;line-height:1.8}
+ .karthika-posters--compact .karthika-main-site{font-size:12px;margin-top:8px}
+ .karthika-posters--compact .karthika-schedule-layout{flex:1;min-height:0;width:100%;max-width:none;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:24px;padding:14px 24px}
+ .karthika-posters--compact .karthika-large-poster{height:100%;min-height:0;max-height:100%;object-fit:contain}
+ .karthika-posters--compact .karthika-schedule-summary{min-height:0;padding:0}
+ .karthika-posters--compact .karthika-schedule-summary h3{font-size:24px;margin:0 0 8px;line-height:1.3}
+ .karthika-posters--compact .karthika-schedule-summary h3 span{display:inline;font-size:20px;margin-left:12px}
+ .karthika-posters--compact .karthika-schedule-summary .eyebrow{margin:0 0 6px;font-size:10px}
+ .karthika-posters--compact .karthika-schedule-summary .karthika-poster-timing{font-size:14px;line-height:1.5;margin:0 0 12px}
+ .karthika-posters--compact .karthika-schedule-cards{grid-template-columns:1fr 1fr;gap:10px}
+ .karthika-posters--compact .karthika-date-card{padding:10px 12px}
+ .karthika-posters--compact .karthika-date-card strong{font-size:18px;gap:4px 8px}
+ .karthika-posters--compact .karthika-date-card strong span{font-size:14px}
+ .karthika-posters--compact .karthika-date-card p{font-size:16px;line-height:1.45;margin:5px 0!important}
+ .karthika-posters--compact .karthika-date-time{font-size:14px;line-height:1.5;margin-top:5px}
+ .karthika-posters--compact .karthika-date-card--special{grid-column:1/-1}
+ .registration-dialog--posters .karthika-poster-actions{padding:10px 18px}
+ .registration-dialog--posters .karthika-poster-toolbar{padding:7px 18px}
+ .registration-dialog--posters .karthika-poster-tabs button{min-height:42px}
+}
+@media(min-width:1024px) and (max-height:760px){
+ .karthika-posters--compact .karthika-main-heading{grid-template-columns:110px minmax(0,1fr) 40px}
+ .karthika-posters--compact .karthika-main-heading .karthika-abhishekam-image{width:110px;height:73px}
+ .karthika-posters--compact .karthika-main-heading h3{font-size:26px}
+ .karthika-posters--compact .karthika-main-paragraph{padding:9px 0}
+ .karthika-posters--compact .karthika-main-paragraph p{font-size:16px;line-height:1.7}
+ .karthika-posters--compact .karthika-schedule-summary .eyebrow{display:none}
+}
+
+@media(min-width:1024px) and (max-width:1199px){
+ .karthika-posters--compact .karthika-main-copy{grid-template-columns:1fr 1fr;column-gap:18px}
+ .karthika-posters--compact .karthika-main-paragraph{padding:7px 0}
+ .karthika-posters--compact .karthika-main-paragraph p{font-size:16px;line-height:1.55}
+ .karthika-posters--compact .karthika-main-heading{grid-template-columns:96px minmax(0,1fr) 40px}
+ .karthika-posters--compact .karthika-main-heading .karthika-abhishekam-image{width:96px;height:64px}
+}
+@media(min-width:1024px) and (max-height:680px){
+ .karthika-posters--compact .karthika-main-invitation{padding-top:8px}
+ .karthika-posters--compact .karthika-main-heading .karthika-abhishekam-image{width:96px;height:64px}
+ .karthika-posters--compact .karthika-main-heading h3{font-size:24px}
+ .karthika-posters--compact .karthika-main-paragraph{padding:6px 0}
+}
+
+@media(min-width:1024px) and (max-height:680px){.karthika-posters--compact .karthika-main-site{margin-top:6px}}
+
+/* Use the screen height for the desktop registration iframe as well. */
+.registration-backdrop--embedded{padding:6px}
+.registration-dialog--embedded{width:min(1120px,calc(100vw - 12px));height:calc(100dvh - 12px);max-height:calc(100dvh - 12px)}
