@@ -1,0 +1,1 @@
+export const karthikaEvent={id:'karthika-masam-2026',title:'Karthika Masam',subtitle:'A month of devotion. A gathering of hearts.',description:'Join the KKC family for Karthika Masam prayers and devotional gatherings. Register your interest and share how many people will be joining you.',date:'To be announced',time:'To be announced',venue:'To be announced'};

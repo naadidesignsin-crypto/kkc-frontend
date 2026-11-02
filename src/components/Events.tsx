@@ -37,8 +37,8 @@ export default function Events() {
           <p className="eyebrow">Sacred Gatherings</p>
           <h2>Upcoming Events</h2>
           <p>
-            Upcoming KKC event details are shown as a slideshow. Later this same
-            section can load event slides and video panels dynamically from the backend.
+            Come together for devotional gatherings, prayers, and community seva.
+
           </p>
         </div>
 
@@ -61,8 +61,8 @@ export default function Events() {
             <p>{activeEvent.description}</p>
 
             <div className="ongoing-event-actions">
-              <a className="primary-btn donation-btn" href={activeEvent.donationUrl}>
-                Donate Now
+              <a className="primary-btn donation-btn" href={activeEvent.registrationUrl || activeEvent.donationUrl}>
+                {activeEvent.registrationUrl ? 'Register your interest' : 'Donate Now'}
               </a>
               <a className="secondary-btn" href={activeEvent.contactUrl}>
                 Contact KKC

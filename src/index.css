@@ -2521,3 +2521,52 @@ h3,
     font-size: 1.35rem;
   }
 }
+/* Karthika Masam registration */
+.karthika-section { padding:40px 0 64px; scroll-margin-top:110px; }
+.karthika-feature { display:grid; grid-template-columns:.38fr 1fr; gap:40px; align-items:center; padding:clamp(24px,5vw,54px); }
+.karthika-emblem { display:grid; place-items:center; aspect-ratio:1; border:1px solid var(--line); border-radius:50%; color:var(--gold); font-size:clamp(70px,12vw,150px); background:radial-gradient(circle,rgba(217,173,87,.2),transparent 70%); }
+.karthika-copy h2 { font-size:clamp(2.4rem,5vw,4.5rem); }
+.karthika-copy p, .registration-dialog p { color:var(--muted); line-height:1.65; }
+.karthika-copy .eyebrow, .registration-dialog .eyebrow { color:var(--gold); }
+.karthika-subtitle { font-size:1.2rem; }
+.karthika-details { display:flex; flex-wrap:wrap; gap:18px 32px; margin:24px 0; padding:18px 0; border-block:1px solid var(--line); }
+.karthika-details div { flex:1; min-width:100px; }
+.karthika-details dt { color:var(--gold); text-transform:uppercase; font-size:.75rem; letter-spacing:.1em; margin-bottom:6px; }
+.karthika-details dd { margin:0; font-size:.94rem; }
+.registration-demo-note { font-size:.8rem; line-height:1.6; margin:16px 0 0; }
+.registration-records { margin-top:20px; border:1px solid var(--line); border-radius:20px; background:#0e0c08; }
+.registration-records summary { cursor:pointer; padding:20px 24px; font-weight:600; }
+.registration-records summary span { margin-left:12px; color:var(--gold); font-size:.8rem; }
+.registration-records-body { padding:0 24px 24px; }
+.registration-records-body > p { font-size:.88rem; color:var(--muted); line-height:1.6; }
+.registration-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.registration-table-wrap { overflow-x:auto; }
+.registration-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.registration-table th, .registration-table td { padding:14px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; max-width:280px; overflow-wrap:anywhere; }
+.registration-table th { color:var(--gold); }
+.registration-backdrop { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,.82); backdrop-filter:blur(10px); display:grid; place-items:center; padding:24px; overflow-y:auto; }
+.registration-dialog { position:relative; width:min(580px,100%); max-height:calc(100dvh - 48px); overflow-y:auto; overscroll-behavior:contain; border:1px solid rgba(217,173,87,.55); border-radius:28px; background:radial-gradient(ellipse at top left,rgba(142,93,25,.22),transparent 55%),#0e0c08; padding:36px; box-shadow:0 32px 100px #000; }
+.registration-dialog h2 { padding-right:25px; font-size:clamp(2rem,5vw,3rem); }
+.registration-dialog > .eyebrow { padding-right:36px; }
+.registration-close { position:absolute; top:18px; right:18px; width:36px; height:36px; border:1px solid var(--line); border-radius:50%; background:#1c160d; color:var(--gold); font-size:1.5rem; }
+.registration-form { display:grid; gap:16px; }
+.registration-form label { display:grid; gap:8px; font-size:.88rem; line-height:1.5; }
+.registration-form input, .registration-form textarea { width:100%; min-width:0; background:rgba(0,0,0,.4); border:1px solid var(--line); border-radius:12px; color:#fff; padding:12px 14px; }
+.registration-form textarea { resize:vertical; }
+.registration-form-row { display:grid; grid-template-columns:1.4fr 1fr; gap:16px; }
+.registration-form .registration-demo-note { margin:0; }
+.registration-error { color:#ffbdb1 !important; font-size:.88rem; margin:0; }
+.registration-reference { overflow-wrap:anywhere; font-size:.8rem; }
+.registration-later { background:transparent; border:0; color:var(--muted); text-decoration:underline; padding:8px; }
+.karthika-section button:focus-visible, .registration-dialog button:focus-visible, .registration-form input:focus-visible, .registration-form textarea:focus-visible, .registration-records summary:focus-visible { outline:2px solid var(--gold); outline-offset:4px; }
+.karthika-section button:disabled { cursor:not-allowed; opacity:.5; }
+@media(max-width:760px) {
+ .karthika-feature { grid-template-columns:1fr; gap:20px; }
+ .karthika-emblem { width:80px; font-size:45px; }
+ .registration-backdrop { padding:12px; }
+ .registration-dialog { padding:26px 20px; max-height:calc(100dvh - 24px); border-radius:22px; }
+ .registration-form-row { grid-template-columns:1fr; }
+ .registration-records summary { padding:18px; line-height:1.7; }
+ .registration-records-body { padding:0 18px 18px; }
+ .registration-toolbar { align-items:stretch; flex-direction:column; }
+}

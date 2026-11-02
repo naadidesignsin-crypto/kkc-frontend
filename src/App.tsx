@@ -9,6 +9,7 @@ import WhatsAppPanel from './components/WhatsAppPanel';
 import ChatBot from "./components/ChatBot";
 import VideoGallery from "./components/VideoGallery";
 
+import EventRegistration from './components/EventRegistration';
 function App() {
   return (
     <main className="app-shell">
@@ -16,6 +17,7 @@ function App() {
       <Navbar />
       <Hero />
       <PlanetOrbit />
+      <EventRegistration />
       <Events />
       <Services />
       <Contact />

@@ -14,6 +14,7 @@ export type KkcEvent = {
   mediaType: EventMediaType;
   donationUrl: string;
   contactUrl: string;
+  registrationUrl?: string;
 };
 
 export const ongoingEvent: KkcEvent = {
@@ -29,6 +30,7 @@ export const ongoingEvent: KkcEvent = {
 };
 
 export const upcomingEvents: KkcEvent[] = [
+ {id:5,title:'Karthika Masam',subtitle:'Registration of interest open',description:'Join KKC for Karthika Masam prayers and devotional gatherings. Date, time, and venue will be announced.',image:event2,mediaType:'image',donationUrl:'#contact',contactUrl:'#contact',registrationUrl:'#karthika-registration'},
   {
     id: 2,
     title: "Yagna Seva",
