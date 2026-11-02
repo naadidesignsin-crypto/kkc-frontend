@@ -18,7 +18,7 @@ Repeat separately for _local first, then _prod:
 6. Test _local without real money. In the linked Sheet, verify the selected Seva, Dakshina, reported paid amount and test reference.
 7. Reopen the Sheet and use KKC Registrations > Export registrations to PDF. Open the new document/PDF links shown by the export. Previously generated documents are snapshots and do not update automatically.
 
-Current production repository config has a Google Forms responder URL and no production web-app URL. The Google Forms page itself cannot receive this project's custom width/logo styling; the updated KKC Apps Script form must be configured to show it. A frontend Git push does not deploy Google Apps Script.
+Production is configured with its separate styled Apps Script /exec URL in .env.production. The Google Forms page itself cannot receive this project's custom width/logo styling; the updated KKC Apps Script form must be configured to show it. A frontend Git push does not deploy Google Apps Script.
 
 Local visual previews (no submissions):
 - http://localhost:5173/registration-preview/english
