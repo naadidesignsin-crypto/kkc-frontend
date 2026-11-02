@@ -60,3 +60,6 @@ The old unsuffixed `VITE_REGISTRATION_FORM_URL` variable is no longer used. Move
 PDF report filenames include the Sheet environment. The setup script rejects changing an existing linked Sheet from local to prod and rejects form IDs belonging to another Sheet. Keep both response Sheets private.
 
 The public production responder URL is now configured in .env.production, which can be committed because it contains no organiser links or secrets. New production builds use it automatically. A same-named variable configured directly in Vercel takes precedence; update or remove any stale override. Local development continues using the separate .env.local setting.
+
+## KKC-styled form
+See [Styled registration deployment](integrations/STYLED_REGISTRATION.md) for the embedded black-and-gold form using the same local/prod Forms and Sheets. Existing responder links remain active until the web apps are deployed.

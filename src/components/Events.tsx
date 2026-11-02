@@ -9,6 +9,7 @@ export default function Events() {
   const activeEvent = upcomingEvents[activeIndex];
 
   useEffect(() => {
+    if (activeEvent.posterId) return;
     const timerId = window.setInterval(() => {
       setActiveIndex((currentIndex) =>
         currentIndex === upcomingEvents.length - 1 ? 0 : currentIndex + 1
@@ -16,7 +17,7 @@ export default function Events() {
     }, SLIDE_DURATION);
 
     return () => window.clearInterval(timerId);
-  }, []);
+  }, [activeEvent.posterId]);
 
   const goToPreviousSlide = () => {
     setActiveIndex((currentIndex) =>
@@ -35,7 +36,7 @@ export default function Events() {
       <div className="section-wrap">
         <div className="section-heading">
           <p className="eyebrow">Sacred Gatherings</p>
-          <h2>Upcoming Events</h2>
+          <h2>Upcoming &amp; Ongoing Events</h2>
           <p>
             Come together for devotional gatherings, prayers, and community seva.
 
@@ -47,7 +48,7 @@ export default function Events() {
             <img
               src={activeEvent.image}
               alt={activeEvent.title}
-              className="event-slide-image"
+              className={activeEvent.registrationUrl ? "event-slide-image event-slide-image--poster" : "event-slide-image"}
             />
 
             <div className="event-slide-counter">
@@ -61,6 +62,7 @@ export default function Events() {
             <p>{activeEvent.description}</p>
 
             <div className="ongoing-event-actions">
+              {activeEvent.posterId && <button className="secondary-btn" type="button" onClick={() => window.dispatchEvent(new CustomEvent('kkc:open-poster', { detail: { id: activeEvent.posterId } }))}>View full poster ↗</button>}
               <a className="primary-btn donation-btn" href={activeEvent.registrationUrl || activeEvent.donationUrl}>
                 {activeEvent.registrationUrl ? 'Register your interest' : 'Donate Now'}
               </a>

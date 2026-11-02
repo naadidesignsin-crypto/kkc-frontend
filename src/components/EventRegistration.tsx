@@ -1,8 +1,9 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { karthikaEvent as event } from '../data/karthikaEvent';
+import { karthikaEvent as event, getKarthikaStatus, karthikaPosters } from '../data/karthikaEvent';
+import KarthikaPosters from './KarthikaPosters';
 import { readRegistrations, saveRegistration, createRegistrationWorkbook, type Registration } from '../lib/registrations';
 import { printRegistrations } from '../lib/registrationPdf';
-import { getGoogleRegistrationUrl, selectRegistrationFormUrl } from '../lib/googleRegistration';
+import { getGoogleRegistrationUrl, getRegistrationWebAppUrl, selectRegistrationFormUrl } from '../lib/googleRegistration';
 
 const empty = { gothram: '', fullName: '', mobile: '', email: '', address: '', note: '' };
 const noticeKey = 'kkc.karthika-notice.v1';
@@ -10,10 +11,21 @@ const configuredForm = selectRegistrationFormUrl(import.meta.env.DEV, {
   local: import.meta.env.VITE_REGISTRATION_FORM_URL_LOCAL,
   prod: import.meta.env.VITE_REGISTRATION_FORM_URL_PROD,
 });
-const googleFormUrl = getGoogleRegistrationUrl(configuredForm);
+const configuredWebApp = selectRegistrationFormUrl(import.meta.env.DEV, {
+  local: import.meta.env.VITE_REGISTRATION_WEBAPP_URL_LOCAL,
+  prod: import.meta.env.VITE_REGISTRATION_WEBAPP_URL_PROD,
+});
+const registrationLanguage = window.location.pathname === '/telugu' ? 'te' : 'en';
+const validatedWebAppUrl = getRegistrationWebAppUrl(configuredWebApp);
+const webAppUrl = validatedWebAppUrl ? (() => { const url = new URL(validatedWebAppUrl); url.searchParams.set('lang', registrationLanguage); return url.toString(); })() : null;
+const googleFormUrl = configuredWebApp ? null : getGoogleRegistrationUrl(configuredForm);
+const sharedRegistrationConfigured = !!(configuredWebApp || configuredForm);
 
 export default function EventRegistration() {
   const [open, setOpen] = useState(false);
+  const [showPosters, setShowPosters] = useState(true);
+  const [posterIndex, setPosterIndex] = useState(0);
+  const [eventStatus, setEventStatus] = useState(getKarthikaStatus);
   const [form, setForm] = useState(empty);
   const [rows, setRows] = useState<Registration[]>([]);
   const [error, setError] = useState('');
@@ -24,14 +36,30 @@ export default function EventRegistration() {
   const dialog = useRef<HTMLDivElement>(null);
   const close = useRef<HTMLButtonElement>(null);
 
+  function expandPoster(index: number) {
+    setPosterIndex(index);
+    setShowPosters(true);
+    setOpen(true);
+  }
+
   function dismiss() {
     setOpen(false);
     try { sessionStorage.setItem(noticeKey, 'seen'); } catch { /* Dismissal still works. */ }
   }
 
   useEffect(() => {
+    const showPoster = (event: Event) => {
+      const id = (event as CustomEvent<{ id: string }>).detail?.id;
+      const index = karthikaPosters.findIndex(poster => poster.id === id);
+      if (index >= 0) expandPoster(index);
+    };
+    window.addEventListener('kkc:open-poster', showPoster);
+    return () => window.removeEventListener('kkc:open-poster', showPoster);
+  }, []);
+
+  useEffect(() => {
     const refresh = () => {
-      if (configuredForm) return;
+      if (sharedRegistrationConfigured) return;
       try {
         setRows(readRegistrations().filter(row => row.eventId === event.id));
         setStorageError('');
@@ -40,11 +68,14 @@ export default function EventRegistration() {
     refresh();
     window.addEventListener('storage', refresh);
     const timer = window.setTimeout(() => {
-      let seen = false;
-      try { seen = sessionStorage.getItem(noticeKey) === 'seen'; } catch { /* Show notice. */ }
-      if (!seen) setOpen(true);
+      const languageRoute = ['/telugu', '/english'].includes(window.location.pathname);
+      if (getKarthikaStatus() !== 'Completed' || languageRoute) {
+        setShowPosters(true);
+        setOpen(true);
+      }
     }, 1400);
-    return () => { window.clearTimeout(timer); window.removeEventListener('storage', refresh); };
+    const statusTimer = window.setInterval(() => setEventStatus(getKarthikaStatus()), 60000);
+    return () => { window.clearTimeout(timer); window.clearInterval(statusTimer); window.removeEventListener('storage', refresh); };
   }, []);
 
   useEffect(() => {
@@ -56,7 +87,7 @@ export default function EventRegistration() {
     const key = (e: KeyboardEvent) => {
       if (e.key === 'Escape') dismiss();
       if (e.key !== 'Tab') return;
-      const items = dialog.current?.querySelectorAll<HTMLElement>('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),a[href]');
+      const items = dialog.current?.querySelectorAll<HTMLElement>('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),a[href],iframe');
       if (!items?.length) return;
       const first = items[0], last = items[items.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
@@ -128,22 +159,25 @@ export default function EventRegistration() {
     <article className="karthika-feature reveal-card">
       <div className="karthika-emblem" aria-hidden="true">✦</div>
       <div className="karthika-copy">
-        <p className="eyebrow">Upcoming special gathering</p>
+        <p className="eyebrow">{eventStatus} · Karthika Masam programme</p>
         <h2 id="karthika-heading">{event.title}</h2>
         <p className="karthika-subtitle">{event.subtitle}</p>
         <p>{event.description}</p>
         {details}
-        <button className="primary-btn" type="button" onClick={() => { setSuccess(null); setError(''); setOpen(true); }}>
+        <KarthikaPosters onExpand={expandPoster} />
+        <button className="primary-btn" type="button" onClick={() => { setSuccess(null); setError(''); setShowPosters(false); setOpen(true); }}>
           Register for Karthika Masam ↗
         </button>
-        <p className="registration-demo-note">{googleFormUrl
+        <p className="registration-demo-note">{webAppUrl
+          ? 'Register here. Your details are shared privately with the KKC organising team.'
+          : googleFormUrl
           ? 'Registration opens securely in Google Forms. Your details will be shared with the KKC organising team.'
-          : configuredForm ? 'Online registration is temporarily unavailable. Please contact KKC.'
+          : sharedRegistrationConfigured ? 'Online registration is temporarily unavailable. Please contact KKC.'
           : 'Demo registration: saved in this browser only. Your details are not sent to KKC.'}</p>
       </div>
     </article>
 
-    {!configuredForm && <details className="registration-records">
+    {!sharedRegistrationConfigured && <details className="registration-records">
       <summary>Demo registrations &amp; PDF / Excel export <span>{rows.length} saved</span></summary>
       <div className="registration-records-body">
         <p>Records are available only in this browser on this device. Clearing browser data removes them. This demo panel has no admin sign-in.</p>
@@ -169,15 +203,26 @@ export default function EventRegistration() {
       </div>
     </details>}
 
-    {open && <div className="registration-backdrop" onClick={e => { if (e.target === e.currentTarget) dismiss(); }}>
-      <div ref={dialog} className="registration-dialog" role="dialog" aria-modal="true" aria-labelledby="registration-title" aria-describedby="registration-description">
+    {open && <div className={!showPosters && webAppUrl ? "registration-backdrop registration-backdrop--embedded" : showPosters ? "registration-backdrop registration-backdrop--posters" : "registration-backdrop"} onClick={e => { if (e.target === e.currentTarget) dismiss(); }}>
+      <div ref={dialog} className={showPosters ? "registration-dialog registration-dialog--posters" : webAppUrl ? "registration-dialog registration-dialog--embedded" : "registration-dialog"} role="dialog" aria-modal="true" aria-labelledby="registration-title" aria-describedby="registration-description">
         <button ref={close} className="registration-close" type="button" aria-label="Close registration" onClick={dismiss}>×</button>
-        <p className="eyebrow">You’re invited · KKC</p>
-        <h2 id="registration-title">{success ? 'Your interest is saved' : event.title}</h2>
-        <p id="registration-description">Register your Gothram and Namam for our upcoming devotional gathering.</p>
-        {configuredForm ? <>
-          {details}
-          {googleFormUrl ? <div className="registration-online">
+        <header className="registration-dialog-header">
+          {showPosters ? <p className="eyebrow">{eventStatus} · KKC</p> : !webAppUrl && <p className="eyebrow">You’re invited · KKC</p>}
+          <h2 id="registration-title">{success && !showPosters ? 'Your interest is saved' : event.title}</h2>
+          <p id="registration-description" className={showPosters || webAppUrl ? 'registration-sr-only' : undefined}>Register your Gothram and Namam for our upcoming devotional gathering.</p>
+        </header>
+        {showPosters ? <>
+          <KarthikaPosters compact initialIndex={posterIndex} />
+          <footer className="karthika-poster-actions">
+            <button className="primary-btn" type="button" onClick={() => { setShowPosters(false); setSuccess(null); setError(''); close.current?.focus(); }}>Register / నమోదు ↗</button>
+            <button className="registration-later" type="button" onClick={() => { dismiss(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Go to homepage / హోమ్ పేజీ</button>
+          </footer>
+        </> : sharedRegistrationConfigured ? <>
+          {!webAppUrl && details}
+          {webAppUrl ? <div className="registration-embedded">
+            <iframe src={webAppUrl} title="KKC Karthika Masam registration form" className="registration-webapp-frame" referrerPolicy="strict-origin-when-cross-origin" />
+            <a className="registration-new-tab" href={webAppUrl} target="_blank" rel="noopener noreferrer">Open registration in a new tab ↗</a>
+          </div> : googleFormUrl ? <div className="registration-online">
             <p>Enter your Gothram, Namam, phone number, and email ID in our Google Form. Address and note are optional.</p>
             <a className="primary-btn full-btn" href={googleFormUrl} target="_blank" rel="noopener noreferrer">Continue to registration ↗</a>
             <p className="registration-demo-note">Complete and submit the Google Form to register. The KKC team can access the shared registrations; personal details are not displayed publicly.</p>

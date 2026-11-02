@@ -19,3 +19,13 @@ export function getGoogleRegistrationUrl(value: string | undefined): string | nu
   } catch { /* Invalid configuration must not become a public registration link. */ }
   return null;
 }
+
+export function getRegistrationWebAppUrl(value: string | undefined): string | null {
+  if (!value?.trim()) return null;
+  try {
+    const url = new URL(value.trim());
+    if (url.protocol !== 'https:' || url.username || url.password) return null;
+    if (url.hostname === 'script.google.com' && /^\/macros\/s\/[a-zA-Z0-9_-]+\/exec\/?$/.test(url.pathname)) return url.href;
+  } catch { /* Invalid deployment URLs stay unavailable. */ }
+  return null;
+}

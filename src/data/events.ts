@@ -1,3 +1,4 @@
+import { karthikaEvent, karthikaPosters, getKarthikaStatus } from './karthikaEvent';
 import event1 from "../assets/events/slider-01.jpeg";
 import event2 from "../assets/events/slider-02.jpeg";
 import event3 from "../assets/events/slider-03.jpeg";
@@ -15,9 +16,10 @@ export type KkcEvent = {
   donationUrl: string;
   contactUrl: string;
   registrationUrl?: string;
+  posterId?: string;
 };
 
-export const ongoingEvent: KkcEvent = {
+const gauSeva: KkcEvent = {
   id: 1,
   title: "Gau Seva",
   subtitle: "KKC Ongoing Event",
@@ -29,8 +31,14 @@ export const ongoingEvent: KkcEvent = {
   contactUrl: "#contact",
 };
 
+export const ongoingEvent: KkcEvent = getKarthikaStatus() !== 'Completed' ? {
+  id: 5, title: karthikaEvent.title, subtitle: getKarthikaStatus() + ' · Karthika Masam',
+  description: karthikaEvent.description, image: karthikaPosters[0].image,
+  mediaType: 'image', donationUrl: '#karthika-registration', contactUrl: '#contact', registrationUrl: '#karthika-registration',
+} : gauSeva;
+
 export const upcomingEvents: KkcEvent[] = [
- {id:5,title:'Karthika Masam',subtitle:'Registration of interest open',description:'Join KKC for Karthika Masam prayers and devotional gatherings. Date, time, and venue will be announced.',image:event2,mediaType:'image',donationUrl:'#contact',contactUrl:'#contact',registrationUrl:'#karthika-registration'},
+ ...karthikaPosters.map((poster, index): KkcEvent => ({id: 5 + index, posterId: poster.id, title: poster.title, subtitle: getKarthikaStatus() + ' · Karthika Masam 2026', description: poster.id === 'main' ? karthikaEvent.description : poster.timing + '. ' + poster.dates.join('; ') + '.', image: poster.image, mediaType: 'image', donationUrl: '#contact', contactUrl: '#contact', registrationUrl: '#karthika-registration'})),
   {
     id: 2,
     title: "Yagna Seva",
