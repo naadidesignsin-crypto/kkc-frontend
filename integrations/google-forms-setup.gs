@@ -1,31 +1,66 @@
 /**
  * Paste into Extensions > Apps Script in a new, private Google Sheet.
- * Run setupKarthikaRegistration once under the KKC Google account.
+ * In separate new Sheets, run setupLocalKarthikaRegistration or setupProductionKarthikaRegistration.
  * Reopening the Sheet adds the KKC Registrations menu.
  */
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('KKC Registrations')
-    .addItem('Create / show registration form', 'setupKarthikaRegistration')
+    .addItem('Create / show _local test form', 'setupLocalKarthikaRegistration')
+    .addItem('Create / show _prod live form', 'setupProductionKarthikaRegistration')
     .addItem('Export registrations to PDF', 'exportKarthikaRegistrationsPdf')
     .addToUi();
 }
 
+function setupLocalKarthikaRegistration() {
+  setupKarthikaRegistrationForEnvironment_('local');
+}
+
+function setupProductionKarthikaRegistration() {
+  setupKarthikaRegistrationForEnvironment_('prod');
+}
+
+// Retain the original entry point for sheets already named with a suffix.
 function setupKarthikaRegistration() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet();
+  const match = sheet && sheet.getName().match(/_(local|prod)$/);
+  if (!match) throw new Error('Choose setupLocalKarthikaRegistration or setupProductionKarthikaRegistration.');
+  setupKarthikaRegistrationForEnvironment_(match[1]);
+}
+
+function setupKarthikaRegistrationForEnvironment_(environment) {
+  if (environment !== 'local' && environment !== 'prod') throw new Error('Invalid environment.');
   const sheet = SpreadsheetApp.getActiveSpreadsheet();
   if (!sheet) throw new Error('Open this script from a Google Sheet using Extensions > Apps Script.');
   const properties = PropertiesService.getDocumentProperties();
+  const savedEnvironment = properties.getProperty('KKC_ENVIRONMENT');
+  if (savedEnvironment && savedEnvironment !== environment) {
+    throw new Error('This Sheet is already used for _' + savedEnvironment + '. Create a separate new Sheet for _' + environment + '.');
+  }
+  const sheetName = 'KKC_Karthika_Masam_' + environment;
+  const formName = 'KKC - Karthika Masam Registration_' + environment;
   const savedId = properties.getProperty('KKC_FORM_ID');
   if (savedId) {
     const existing = FormApp.openById(savedId);
+    if (existing.getDestinationId() !== sheet.getId()) {
+      throw new Error('This form belongs to another Sheet. Create a new Sheet and paste the script again; do not copy an existing linked Sheet.');
+    }
+    if (properties.getProperty('KKC_FORM_READY') !== 'true') {
+      throw new Error('Previous setup did not finish. Inspect the saved form and its destination before continuing.');
+    }
+    sheet.setName(sheetName);
+    existing.setTitle(formName);
+    properties.setProperty('KKC_ENVIRONMENT', environment);
     SpreadsheetApp.getUi().alert('Responder link: ' + existing.getPublishedUrl() + '\n\nEdit form: ' + existing.getEditUrl());
     return;
   }
   if (sheet.getFormUrl()) throw new Error('This spreadsheet already has a linked form. Use a new private Google Sheet.');
-  const form = FormApp.create('KKC - Karthika Masam Registration');
+  sheet.setName(sheetName);
+  properties.setProperty('KKC_ENVIRONMENT', environment);
+  const form = FormApp.create(formName);
   // Store immediately so rerunning after an interruption never creates duplicate forms.
   properties.setProperty('KKC_FORM_ID', form.getId());
   if (form.supportsAdvancedResponderPermissions()) form.setPublished(false);
-  form.setDescription('Register for the KKC Karthika Masam devotional gathering. Date, time, and venue will be announced. Gothram, Namam, phone number, and email ID are required. Address and note are optional. Your details are shared with the KKC organising team.');
+  form.setDescription((environment === 'local' ? 'TEST REGISTRATIONS ONLY. ' : '') + 'Register for the KKC Karthika Masam devotional gathering. Date, time, and venue will be announced. Gothram, Namam, phone number, and email ID are required. Address and note are optional. Your details are shared with the KKC organising team.');
   form.setCollectEmail(false);
   form.setLimitOneResponsePerUser(false);
   form.setPublishingSummary(false);
@@ -40,13 +75,14 @@ function setupKarthikaRegistration() {
     .setValidation(FormApp.createTextValidation().requireTextIsEmail().build());
   form.addParagraphTextItem().setTitle('Address (optional)').setRequired(false);
   form.addParagraphTextItem().setTitle('Note (optional)').setRequired(false);
-  form.setConfirmationMessage('Thank you. Your Karthika Masam registration has been received by KKC.');
+  form.setConfirmationMessage(environment === 'local' ? 'Test registration received in the _local Sheet. This is not a live event registration.' : 'Thank you. Your Karthika Masam registration has been received by KKC.');
   form.setDestination(FormApp.DestinationType.SPREADSHEET, sheet.getId());
   if (form.supportsAdvancedResponderPermissions()) form.setPublished(true);
   else form.setAcceptingResponses(true);
   const links = sheet.insertSheet('KKC Setup');
-  links.getRange(1, 1, 4, 2).setValues([
+  links.getRange(1, 1, 5, 2).setValues([
     ['Purpose', 'URL'],
+    ['Environment', '_' + environment],
     ['Responder link (website)', form.getPublishedUrl()],
     ['Edit form (organisers only)', form.getEditUrl()],
     ['Registration spreadsheet (organisers only)', sheet.getUrl()]
@@ -69,11 +105,12 @@ function exportKarthikaRegistrationsPdf() {
     return;
   }
   const timestamp = Utilities.formatDate(new Date(), 'Asia/Kolkata', 'yyyy-MM-dd HH-mm');
-  const title = 'KKC - Karthika Masam Registrations - ' + timestamp;
+  const environment = properties.getProperty('KKC_ENVIRONMENT') || 'legacy';
+  const title = 'KKC - Karthika Masam Registrations_' + environment + ' - ' + timestamp;
   const doc = DocumentApp.create(title);
   const body = doc.getBody();
   body.appendParagraph('KKC - Karthika Masam').setHeading(DocumentApp.ParagraphHeading.HEADING1);
-  body.appendParagraph('Registration report | Total: ' + responses.length);
+  body.appendParagraph('Environment: _' + environment + ' | Total registrations: ' + responses.length);
   body.appendParagraph('Generated: ' + timestamp + ' IST');
   responses.forEach(function(response, index) {
     if (index > 0) body.appendPageBreak();

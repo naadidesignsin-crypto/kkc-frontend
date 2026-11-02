@@ -2,11 +2,14 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 import { karthikaEvent as event } from '../data/karthikaEvent';
 import { readRegistrations, saveRegistration, createRegistrationWorkbook, type Registration } from '../lib/registrations';
 import { printRegistrations } from '../lib/registrationPdf';
-import { getGoogleRegistrationUrl } from '../lib/googleRegistration';
+import { getGoogleRegistrationUrl, selectRegistrationFormUrl } from '../lib/googleRegistration';
 
 const empty = { gothram: '', fullName: '', mobile: '', email: '', address: '', note: '' };
 const noticeKey = 'kkc.karthika-notice.v1';
-const configuredForm = import.meta.env.VITE_REGISTRATION_FORM_URL?.trim();
+const configuredForm = selectRegistrationFormUrl(import.meta.env.DEV, {
+  local: import.meta.env.VITE_REGISTRATION_FORM_URL_LOCAL,
+  prod: import.meta.env.VITE_REGISTRATION_FORM_URL_PROD,
+});
 const googleFormUrl = getGoogleRegistrationUrl(configuredForm);
 
 export default function EventRegistration() {

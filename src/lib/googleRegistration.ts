@@ -1,3 +1,14 @@
+/**
+ * Development uses only LOCAL; production builds use only PROD.
+ * No fallback between environments: a missing URL stays in demo mode.
+ */
+export function selectRegistrationFormUrl(
+  isDevelopment: boolean,
+  urls: { local?: string; prod?: string },
+): string | undefined {
+  return (isDevelopment ? urls.local : urls.prod)?.trim() || undefined;
+}
+
 export function getGoogleRegistrationUrl(value: string | undefined): string | null {
   if (!value?.trim()) return null;
   try {
