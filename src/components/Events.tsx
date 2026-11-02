@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { upcomingEvents } from "../data/events";
+import { karthikaPosters } from "../data/karthikaEvent";
 
 const SLIDE_DURATION = 5000;
 
@@ -7,6 +8,7 @@ export default function Events() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const activeEvent = upcomingEvents[activeIndex];
+  const programme = karthikaPosters.find(poster => poster.id === activeEvent.posterId);
 
   useEffect(() => {
     if (activeEvent.posterId) return;
@@ -46,6 +48,10 @@ export default function Events() {
         <article className="ongoing-event-card upcoming-slider-card reveal-card">
           <div className="ongoing-event-media event-slide-image-wrap">
             <img
+              key={activeEvent.id}
+              width={activeEvent.posterId === "main" ? 1440 : 1024}
+              height={activeEvent.posterId === "main" ? 814 : 1536}
+              decoding="async"
               src={activeEvent.image}
               alt={activeEvent.title}
               className={activeEvent.registrationUrl ? "event-slide-image event-slide-image--poster" : "event-slide-image"}
@@ -59,7 +65,16 @@ export default function Events() {
           <div className="ongoing-event-content event-slide-content">
             <p className="eyebrow">{activeEvent.subtitle}</p>
             <h3>{activeEvent.title}</h3>
-            <p>{activeEvent.description}</p>
+            {programme && programme.dates.length > 0 ? <>
+              <p className="event-programme-timing">{programme.timing}</p>
+              <ul className="event-programme-dates">{programme.dates.map(date => {
+                const [day, weekday, ...occasion] = date.split(' · ');
+                return <li key={date} className={date.includes('Amavasya') ? 'event-programme-special' : undefined}>
+                  <strong>{day}<small>{weekday}</small></strong>
+                  {occasion.length > 0 && <span>{occasion.join(' · ')}</span>}
+                </li>;
+              })}</ul>
+            </> : <p>{activeEvent.description}</p>}
 
             <div className="ongoing-event-actions">
               {activeEvent.posterId && <button className="secondary-btn" type="button" onClick={() => window.dispatchEvent(new CustomEvent('kkc:open-poster', { detail: { id: activeEvent.posterId } }))}>View full poster ↗</button>}

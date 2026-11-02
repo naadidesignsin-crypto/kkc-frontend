@@ -22,7 +22,7 @@ const googleFormUrl = configuredWebApp ? null : getGoogleRegistrationUrl(configu
 const sharedRegistrationConfigured = !!(configuredWebApp || configuredForm);
 
 export default function EventRegistration() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => getKarthikaStatus() !== 'Completed' || ['/telugu', '/english'].includes(window.location.pathname));
   const [showPosters, setShowPosters] = useState(true);
   const [posterIndex, setPosterIndex] = useState(0);
   const [eventStatus, setEventStatus] = useState(getKarthikaStatus);
@@ -67,15 +67,8 @@ export default function EventRegistration() {
     };
     refresh();
     window.addEventListener('storage', refresh);
-    const timer = window.setTimeout(() => {
-      const languageRoute = ['/telugu', '/english'].includes(window.location.pathname);
-      if (getKarthikaStatus() !== 'Completed' || languageRoute) {
-        setShowPosters(true);
-        setOpen(true);
-      }
-    }, 1400);
     const statusTimer = window.setInterval(() => setEventStatus(getKarthikaStatus()), 60000);
-    return () => { window.clearTimeout(timer); window.clearInterval(statusTimer); window.removeEventListener('storage', refresh); };
+    return () => { window.clearInterval(statusTimer); window.removeEventListener('storage', refresh); };
   }, []);
 
   useEffect(() => {

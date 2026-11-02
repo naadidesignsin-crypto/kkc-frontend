@@ -46,3 +46,11 @@ Added src/assets/events/parthiva-sivalingam-abhishekam-2026.png, generated with 
 All three posters share the same full-screen viewer and switch buttons. Homam/Lingarchana artwork now uses the full available column width without the old 260px thumbnail limit or a height cap, alongside readable date/time cards. Phone layouts show a full-width poster and stacked readable schedules. Register/Homepage actions remain visible. View full screen opens the selected poster from the inline gallery; View full poster opens it from the event carousel. Poster slides pause automatic advancement while being read; their image overlays no longer darken the content.
 
 Validated desktop 1440x1000, mobile 390x844 and small mobile 360x640: photograph loads, exact Telugu paragraph preserved, all 9 schedule dates and the noon Amavasya time, image widths, no horizontal overflow, stable action footer, full-screen handoffs from gallery/carousel, and registration handoff. No registrations or payments sent.
+
+## Stable refresh and Upcoming Events fit
+
+The launch invitation is now visible on the first React render instead of appearing after a 1.4-second delay. Its fixed frame and explicit artwork dimensions reserve the layout while images load. Existing completion handling is retained.
+
+Upcoming Events uses a stable desktop card height within the screen below the navigation bar. Artwork is contained without cropping; programme dates are shown in compact readable cards beside it, with navigation and registration controls visible. Switching between posters and other events keeps the same card dimensions. Intrinsic dimensions reserve the main poster ratio on mobile too.
+
+Validated delayed image loading and refresh, and all carousel slides at 1366x768, 1280x720, 1024x768 and 1280x650. Each complete events section fits below the navigation; card content and controls have no vertical/horizontal overflow. This update is frontend-only; no new Apps Script deployment is required for these specific changes.
