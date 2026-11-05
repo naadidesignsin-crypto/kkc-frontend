@@ -57,10 +57,10 @@ export default function KarthikaPosters({ compact = false, initialIndex = 0, onE
     </div>
     <div className="karthika-viewer-scroll" key={poster.id} tabIndex={compact ? 0 : undefined} role="region" aria-label={poster.title + ' details'}>
       {isMain ? <MainInvitation /> : <div className="karthika-schedule-layout">
-        <img className="karthika-large-poster" src={poster.image} alt={poster.alt} width="1024" height="1536" />
+        <img className="karthika-large-poster" src={poster.image} alt={poster.alt} width="1440" height="2560" />
         <Schedule poster={poster} />
       </div>}
     </div>
-    <a className="karthika-main-download" href={poster.image} download={'kkc-' + poster.id + '-2026.png'}>Download poster / పోస్టర్ డౌన్‌లోడ్ ↓</a>
+    <a className="karthika-main-download" href={poster.image} download={'kkc-' + poster.id + '-2026.' + (isMain ? 'png' : 'jpg')}>Download poster / పోస్టర్ డౌన్‌లోడ్ ↓</a>
   </div>;
 }

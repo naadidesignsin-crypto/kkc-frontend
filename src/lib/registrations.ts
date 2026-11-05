@@ -21,8 +21,8 @@ export function readRegistrations(): Registration[] {
 
 export function saveRegistration(row: Registration): Registration[] {
   if (!row.gothram.trim() || row.fullName.trim().length < 2
-    || !/^[6-9][0-9]{9}$/.test(row.mobile) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(row.email)) {
-    throw new Error('Enter Gothram, Namam, a valid Indian phone number, and email ID.');
+    || !/^[6-9][0-9]{9}$/.test(row.mobile) || (!!row.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(row.email))) {
+    throw new Error('Enter Gothram, Namam and a valid Indian phone number. If provided, email must be valid.');
   }
   const rows = readRegistrations();
   if (rows.some(existing => existing.eventId === row.eventId && existing.mobile === row.mobile)) {

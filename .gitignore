@@ -4,3 +4,7 @@ dist
 .env.local
 .DS_Store
 .idea
+
+dist-android/
+*.jks
+*.keystore

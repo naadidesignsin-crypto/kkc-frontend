@@ -1,3 +1,4 @@
+import { isLocalRegistration } from '../lib/mobile';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { karthikaEvent as event, getKarthikaStatus, karthikaPosters } from '../data/karthikaEvent';
 import KarthikaPosters from './KarthikaPosters';
@@ -7,21 +8,21 @@ import { getGoogleRegistrationUrl, getRegistrationWebAppUrl, selectRegistrationF
 
 const empty = { gothram: '', fullName: '', mobile: '', email: '', address: '', note: '' };
 const noticeKey = 'kkc.karthika-notice.v1';
-const configuredForm = selectRegistrationFormUrl(import.meta.env.DEV, {
+const configuredForm = selectRegistrationFormUrl(isLocalRegistration, {
   local: import.meta.env.VITE_REGISTRATION_FORM_URL_LOCAL,
   prod: import.meta.env.VITE_REGISTRATION_FORM_URL_PROD,
 });
-const configuredWebApp = selectRegistrationFormUrl(import.meta.env.DEV, {
+const configuredWebApp = selectRegistrationFormUrl(isLocalRegistration, {
   local: import.meta.env.VITE_REGISTRATION_WEBAPP_URL_LOCAL,
   prod: import.meta.env.VITE_REGISTRATION_WEBAPP_URL_PROD,
 });
 const registrationLanguage = window.location.pathname === '/telugu' ? 'te' : 'en';
 const validatedWebAppUrl = getRegistrationWebAppUrl(configuredWebApp);
-const webAppUrl = validatedWebAppUrl ? (() => { const url = new URL(validatedWebAppUrl); url.searchParams.set('lang', registrationLanguage); return url.toString(); })() : null;
+const webAppUrl = validatedWebAppUrl ? (() => { const url = new URL(validatedWebAppUrl); url.searchParams.set('lang', registrationLanguage); const source = new URLSearchParams(window.location.search).get('source'); if (source && /^[a-zA-Z0-9_-]{1,40}$/.test(source)) url.searchParams.set('source', source); return url.toString(); })() : null;
 const googleFormUrl = configuredWebApp ? null : getGoogleRegistrationUrl(configuredForm);
 const sharedRegistrationConfigured = !!(configuredWebApp || configuredForm);
 
-export default function EventRegistration() {
+export default function EventRegistration({ presentation = 'website', onRegister }: { presentation?: 'website' | 'app'; onRegister?: () => void } = {}) {
   const [open, setOpen] = useState(() => getKarthikaStatus() !== 'Completed' || ['/telugu', '/english'].includes(window.location.pathname));
   const [showPosters, setShowPosters] = useState(true);
   const [posterIndex, setPosterIndex] = useState(0);
@@ -40,6 +41,11 @@ export default function EventRegistration() {
     setPosterIndex(index);
     setShowPosters(true);
     setOpen(true);
+  }
+
+  function beginRegistration() {
+    if (onRegister) { dismiss(); onRegister(); return; }
+    setShowPosters(false); setSuccess(null); setError(''); setOpen(true);
   }
 
   function dismiss() {
@@ -148,8 +154,8 @@ export default function EventRegistration() {
     {(['date', 'time', 'venue'] as const).map(key => <div key={key}><dt>{key}</dt><dd>{event[key]}</dd></div>)}
   </dl>;
 
-  return <section className="karthika-section section-wrap" id="karthika-registration" aria-labelledby="karthika-heading">
-    <article className="karthika-feature reveal-card">
+  return <section className={presentation === "app" ? "karthika-section--app" : "karthika-section section-wrap"} id="karthika-registration" aria-labelledby="karthika-heading">
+    {presentation !== "app" && <article className="karthika-feature reveal-card">
       <div className="karthika-emblem" aria-hidden="true">✦</div>
       <div className="karthika-copy">
         <p className="eyebrow">{eventStatus} · Karthika Masam programme</p>
@@ -158,7 +164,7 @@ export default function EventRegistration() {
         <p>{event.description}</p>
         {details}
         <KarthikaPosters onExpand={expandPoster} />
-        <button className="primary-btn" type="button" onClick={() => { setSuccess(null); setError(''); setShowPosters(false); setOpen(true); }}>
+        <button className="primary-btn" type="button" onClick={beginRegistration}>
           Register for Karthika Masam ↗
         </button>
         <p className="registration-demo-note">{webAppUrl
@@ -168,9 +174,9 @@ export default function EventRegistration() {
           : sharedRegistrationConfigured ? 'Online registration is temporarily unavailable. Please contact KKC.'
           : 'Demo registration: saved in this browser only. Your details are not sent to KKC.'}</p>
       </div>
-    </article>
+    </article>}
 
-    {!sharedRegistrationConfigured && <details className="registration-records">
+    {presentation !== "app" && !sharedRegistrationConfigured && <details className="registration-records">
       <summary>Demo registrations &amp; PDF / Excel export <span>{rows.length} saved</span></summary>
       <div className="registration-records-body">
         <p>Records are available only in this browser on this device. Clearing browser data removes them. This demo panel has no admin sign-in.</p>
@@ -207,16 +213,16 @@ export default function EventRegistration() {
         {showPosters ? <>
           <KarthikaPosters compact initialIndex={posterIndex} />
           <footer className="karthika-poster-actions">
-            <button className="primary-btn" type="button" onClick={() => { setShowPosters(false); setSuccess(null); setError(''); close.current?.focus(); }}>Register / నమోదు ↗</button>
+            <button className="primary-btn" type="button" onClick={beginRegistration}>Register / నమోదు ↗</button>
             <button className="registration-later" type="button" onClick={() => { dismiss(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Go to homepage / హోమ్ పేజీ</button>
-          </footer>
+          <a className="registration-later" href="https://wa.me/917981041123?text=Hello%20KKC%2C%20please%20help%20me%20register%20for%20Karthika%20Masam." target="_blank" rel="noopener noreferrer">Need help? WhatsApp KKC / సహాయం</a></footer>
         </> : sharedRegistrationConfigured ? <>
           {!webAppUrl && details}
           {webAppUrl ? <div className="registration-embedded">
             <iframe src={webAppUrl} title="KKC Karthika Masam registration form" className="registration-webapp-frame" referrerPolicy="strict-origin-when-cross-origin" />
             <a className="registration-new-tab" href={webAppUrl} target="_blank" rel="noopener noreferrer">Open registration in a new tab ↗</a>
           </div> : googleFormUrl ? <div className="registration-online">
-            <p>Enter your Gothram, Namam, phone number, and email ID in our Google Form. Address and note are optional.</p>
+            <p>Enter your Gothram, Namam, phone number in our Google Form. Email, address and note are optional.</p>
             <a className="primary-btn full-btn" href={googleFormUrl} target="_blank" rel="noopener noreferrer">Continue to registration ↗</a>
             <p className="registration-demo-note">Complete and submit the Google Form to register. The KKC team can access the shared registrations; personal details are not displayed publicly.</p>
           </div> : <p role="alert" className="registration-error">Online registration is temporarily unavailable. <a href="#contact" onClick={dismiss}>Contact KKC</a> for assistance.</p>}
@@ -232,7 +238,7 @@ export default function EventRegistration() {
               <label>Namam / నామం *<input name="fullName" autoComplete="name" required minLength={2} maxLength={120} value={form.fullName} onChange={e => setForm({ ...form, fullName: e.target.value })} /></label>
             </div>
             <label>Phone number *<input name="mobile" type="tel" inputMode="numeric" autoComplete="tel-national" required pattern="[6-9][0-9]{9}" maxLength={10} title="Enter a 10-digit Indian phone number starting with 6, 7, 8, or 9" placeholder="10-digit Indian phone number" value={form.mobile} onChange={e => setForm({ ...form, mobile: e.target.value })} /></label>
-            <label>Email ID *<input name="email" type="email" autoComplete="email" required maxLength={150} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></label>
+            <label>Email ID (optional)<input name="email" type="email" autoComplete="email" maxLength={150} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></label>
             <label>Address (optional)<textarea name="address" autoComplete="street-address" rows={2} maxLength={1000} value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} /></label>
             <label>Note (optional)<textarea name="note" rows={2} maxLength={1000} value={form.note} onChange={e => setForm({ ...form, note: e.target.value })} /></label>
             <p className="registration-demo-note">Demo only. Details stay in this browser and can be exported as PDF or Excel from the demo panel. No registration is sent to KKC.</p>

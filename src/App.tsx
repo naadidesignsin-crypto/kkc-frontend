@@ -1,3 +1,5 @@
+import AndroidApp from './components/AndroidApp';
+import { isAndroidApp } from './lib/mobile';
 import GalaxyBackground from './components/GalaxyBackground';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -11,6 +13,7 @@ import VideoGallery from "./components/VideoGallery";
 
 import EventRegistration from './components/EventRegistration';
 function App() {
+  if (isAndroidApp) return <AndroidApp />;
   return (
     <main className="app-shell">
       <GalaxyBackground />

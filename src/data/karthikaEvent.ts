@@ -1,7 +1,8 @@
+import rudraHomamPoster from '../assets/events/rudra-homam-bilingual-2026.jpg';
 import mainPoster from '../assets/events/karthika-masam-main-2026.png';
 
-import lingarchanaPoster from '../assets/events/maha-lingarchana-2026.png';
-import homamPoster from '../assets/events/homam-2026.png';
+import lingarchanaPoster from '../assets/events/lingarchana-bilingual-2026.jpg';
+import homamPoster from '../assets/events/purusha-suktam-bilingual-2026.jpg';
 
 export const karthikaEvent = {
   id: 'karthika-masam-2026',
@@ -10,7 +11,7 @@ export const karthikaEvent = {
   description: 'Join KKC for Maha Lingarchana on four Mondays and five special Homams, concluding with Amavasya Rudra Homam and Maha Poornahuti.',
   date: '16 November – 8 December 2026',
   time: 'Mondays 4–8 PM · Homams 9:30–11:30 AM · Amavasya until 12 PM (IST)',
-  venue: 'To be announced',
+  venue: "Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053",
 };
 
 // Programme status follows the event dates in India, independent of visitor timezone.
@@ -46,16 +47,23 @@ export const karthikaPosters = [
     alt: 'KKC Maha Lingarchana: 16, 23, 30 November and 7 December 2026, Mondays, 4 PM to 8 PM.',
   },
   {
-    id: 'homam', title: 'Homam', teluguTitle: 'హోమాలు',
+    id: 'homam', title: 'Purusha Suktam Homams', teluguTitle: 'పురుషసూక్త హోమాలు',
     image: homamPoster,
-    timing: '9:30 AM – 11:30 AM · Amavasya: 9:30 AM – 12:00 PM · IST',
+    timing: '9:30 AM – 11:30 AM · IST',
     dates: [
       '20-11-2026 · Friday · Shukla Ekadashi · Purusha Suktam Homam',
       '24-11-2026 · Tuesday · Poornima · Purusha Suktam Homam',
       '04-12-2026 · Friday · Krishna Ekadashi · Purusha Suktam Homam',
       '05-12-2026 · Saturday · Krishna Dwadashi · Purusha Suktam Homam',
-      '08-12-2026 · Tuesday · Amavasya · Rudra Homam & Maha Poornahuti',
+
     ],
-    alt: 'KKC Homams: 20 and 24 November, 4 and 5 December 2026, 9:30 AM to 11:30 AM. Amavasya Rudra Homam and Maha Poornahuti: 8 December, 9:30 AM to noon.',
+    alt: 'KKC Purusha Suktam Homams: 20 and 24 November, 4 and 5 December 2026, 9:30 AM to 11:30 AM. Bilingual poster with Seva options, Dakshina, venue, contact and registration website.',
+  },
+  {
+    id: 'rudra-homam', title: 'Rudra Homam', teluguTitle: 'రుద్రహోమం',
+    image: rudraHomamPoster,
+    timing: '9:30 AM – 12:00 PM · IST',
+    dates: ['08-12-2026 · Tuesday · Amavasya · Rudra Homam & Maha Poornahuti'],
+    alt: 'KKC Rudra Homam and Maha Poornahuti, 8 December 2026, 9:30 AM to noon. Bilingual poster with Seva options, Dakshina, venue, contact and registration website.',
   },
 ];
