@@ -8,6 +8,7 @@ import { getGoogleRegistrationUrl, getRegistrationWebAppUrl, selectRegistrationF
 
 const empty = { gothram: '', fullName: '', mobile: '', email: '', address: '', note: '' };
 const noticeKey = 'kkc.karthika-notice.v1';
+const invitationRequested = new URLSearchParams(window.location.search).get('invite') === 'karthika-2026';
 const configuredForm = selectRegistrationFormUrl(isLocalRegistration, {
   local: import.meta.env.VITE_REGISTRATION_FORM_URL_LOCAL,
   prod: import.meta.env.VITE_REGISTRATION_FORM_URL_PROD,
@@ -23,7 +24,7 @@ const googleFormUrl = configuredWebApp ? null : getGoogleRegistrationUrl(configu
 const sharedRegistrationConfigured = !!(configuredWebApp || configuredForm);
 
 export default function EventRegistration({ presentation = 'website', onRegister }: { presentation?: 'website' | 'app'; onRegister?: () => void } = {}) {
-  const [open, setOpen] = useState(() => getKarthikaStatus() !== 'Completed' || ['/telugu', '/english'].includes(window.location.pathname));
+  const [open, setOpen] = useState(() => invitationRequested || getKarthikaStatus() !== 'Completed' || ['/telugu', '/english'].includes(window.location.pathname));
   const [showPosters, setShowPosters] = useState(true);
   const [posterIndex, setPosterIndex] = useState(0);
   const [eventStatus, setEventStatus] = useState(getKarthikaStatus);
