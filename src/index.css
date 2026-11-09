@@ -129,13 +129,11 @@ button {
   width: 58px;
   height: 58px;
   flex: 0 0 auto;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(255, 226, 161, 0.55);
-  background: rgba(0, 0, 0, 0.42);
-  box-shadow:
-    0 0 22px rgba(217, 173, 87, 0.32),
-    0 0 54px rgba(217, 173, 87, 0.16);
+  border-radius: 0;
+  object-fit: contain;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 /* Keep this as fallback if logo image is not used */
@@ -1189,12 +1187,10 @@ h3 {
   width: 48px;
   height: 48px;
   flex: 0 0 auto;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(255, 226, 161, 0.55);
-  box-shadow:
-    0 0 18px rgba(217, 173, 87, 0.34),
-    0 0 44px rgba(217, 173, 87, 0.16);
+  border-radius: 0;
+  object-fit: contain;
+  border: 0;
+  box-shadow: none;
 }
 
 @media (max-width: 900px) {
@@ -2871,7 +2867,7 @@ h3,
 .app-shell { overflow-x: clip; }
 
 /* Preserve the supplied monochrome KKC logo without a circular frame. */
-.brand-logo { object-fit: contain; border-radius: 0; background: #000; }
+.brand-logo { object-fit: contain; border-radius: 0; background: transparent; }
 
 .karthika-main-logo { width:100%; height:auto; max-height:88px; object-fit:contain; }
 .karthika-poster-venue { font-size:13px; line-height:1.5; overflow-wrap:anywhere; }
@@ -2881,3 +2877,7 @@ h3,
 
 .brand-logo, .karthika-main-logo { mix-blend-mode:screen; }
 .karthika-main-heading img.karthika-main-logo { height:auto; }
+
+/* The supplied logo already contains its own circular ring. */
+.navbar .brand-logo { clip-path:circle(50% at 50% 50%); display:block; width:72px; height:72px; padding:0; border:0; border-radius:0; box-shadow:none; filter:none; object-fit:contain; background:transparent; }
+@media(max-width:560px){ .navbar .brand-logo { width:60px; height:60px; } }
