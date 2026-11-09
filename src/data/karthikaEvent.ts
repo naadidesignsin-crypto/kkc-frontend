@@ -1,13 +1,11 @@
+import seoFacts from './seoEvents.json';
 import rudraHomamPoster from '../assets/events/rudra-homam-bilingual-2026.jpg';
 import mainPoster from '../assets/events/karthika-masam-main-2026.png';
 
 import lingarchanaPoster from '../assets/events/lingarchana-bilingual-2026.jpg';
 import homamPoster from '../assets/events/purusha-suktam-bilingual-2026.jpg';
 
-export const karthikaVenues = {
-  lingarchana: { address: "Plot No. 26, 2nd Floor, Vijaya Lakshmi Villa, Mahadevapuram, Gajularamaram, KPHB", mapUrl: 'https://maps.app.goo.gl/S9kyPnkr5G5kyVCZA' },
-  homam: { address: "Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053", mapUrl: 'https://maps.app.goo.gl/5un373U6LkZx8EYi8' },
-};
+export const karthikaVenues = seoFacts.venues;
 
 export const karthikaEvent = {
   id: 'karthika-masam-2026',

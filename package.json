@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/build-seo.mjs",
     "preview": "vite preview",
     "android:build": "node scripts/android.mjs local",
     "android:build:prod": "node scripts/android.mjs prod",
     "android:open": "cap open android",
     "android:apk": "node scripts/android.mjs local --apk",
-    "test:registration": "node scripts/test-registration.cjs"
+    "test:registration": "node scripts/test-registration.cjs",
+    "test:seo": "node scripts/test-seo.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.0",

@@ -1,3 +1,4 @@
+import EventSeoLinks from './components/EventSeoLinks';
 import AndroidApp from './components/AndroidApp';
 import { isAndroidApp } from './lib/mobile';
 import GalaxyBackground from './components/GalaxyBackground';
@@ -19,6 +20,7 @@ function App() {
       <GalaxyBackground />
       <Navbar />
       <Hero />
+      <EventSeoLinks />
       <PlanetOrbit />
       <EventRegistration />
       <Events />

@@ -1,0 +1,170 @@
+{
+  "origin": "https://kkcorg.com",
+  "organisation": {
+    "name": "Kundalini Kriya Chaitanyam",
+    "shortName": "KKC",
+    "phone": "+917981041123"
+  },
+  "overview": {
+    "path": "/events/karthika-masam-2026/",
+    "title": "Karthika Masam 2026 in Hyderabad | KKC",
+    "name": "Karthika Masam 2026",
+    "teluguName": "కార్తీక మాస మహోత్సవాలు 2026",
+    "description": "KKC Karthika Masam 2026: Maha Lingarchana, Purusha Suktam Homams and Rudra Homam in Hyderabad, 16 November–8 December. Programme, venues and registration."
+  },
+  "venues": {
+    "lingarchana": {
+      "name": "Vijaya Lakshmi Villa",
+      "teluguName": "విజయ లక్ష్మి విల్లా",
+      "address": "Plot No. 26, 2nd Floor, Vijaya Lakshmi Villa, Mahadevapuram, Gajularamaram, KPHB",
+      "streetAddress": "Plot No. 26, 2nd Floor, Vijaya Lakshmi Villa, Mahadevapuram, Gajularamaram, KPHB",
+      "locality": "Hyderabad",
+      "region": "Telangana",
+      "country": "IN",
+      "mapUrl": "https://maps.app.goo.gl/S9kyPnkr5G5kyVCZA"
+    },
+    "homam": {
+      "name": "Dasa Hanuman and Durga Devi Temple",
+      "teluguName": "దాస హనుమాన్ మరియు దుర్గాదేవి ఆలయం",
+      "address": "Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053",
+      "streetAddress": "119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura",
+      "locality": "Hyderabad",
+      "region": "Telangana",
+      "postalCode": "500053",
+      "country": "IN",
+      "mapUrl": "https://maps.app.goo.gl/5un373U6LkZx8EYi8"
+    }
+  },
+  "sevas": [
+    {
+      "amount": 10116,
+      "en": "Daily Abhishekam, four Mondays Maha Lingarchana and five days of Homams",
+      "te": "ప్రతిరోజూ అభిషేకం, 4 సోమవారాల మహా లింగార్చన మరియు 5 రోజుల హోమాలు"
+    },
+    {
+      "amount": 5116,
+      "en": "Daily Abhishekam and four Mondays Maha Lingarchana",
+      "te": "ప్రతిరోజూ అభిషేకం మరియు 4 సోమవారాల మహా లింగార్చన"
+    },
+    {
+      "amount": 2116,
+      "en": "Maha Lingarchana on all four Mondays only",
+      "te": "4 సోమవారాల మహా లింగార్చన మాత్రమే"
+    },
+    {
+      "amount": 516,
+      "en": "One day Rudrabhishekam",
+      "te": "ఒక రోజు రుద్రాభిషేకం"
+    }
+  ],
+  "programmes": [
+    {
+      "id": "lingarchana",
+      "path": "/events/maha-lingarchana-2026/",
+      "name": "Maha Lingarchana",
+      "teluguName": "మహా లింగార్చన",
+      "title": "Maha Lingarchana 2026 in Gajularamaram, Hyderabad | KKC",
+      "description": "Join KKC Maha Lingarchana on 16, 23, 30 November and 7 December 2026, 4–8 PM, at Vijaya Lakshmi Villa, Gajularamaram. View Seva details and register.",
+      "intro": "Maha Lingarchana takes place on four Mondays during Karthika Masam. Join the KKC programme at Vijaya Lakshmi Villa, Mahadevapuram, Gajularamaram, KPHB.",
+      "teluguIntro": "కార్తీక మాసంలో నాలుగు సోమవారాలు మహా లింగార్చన విశేషంగా నిర్వహించబడును.",
+      "venue": "lingarchana",
+      "image": "lingarchana-bilingual-2026.jpg",
+      "timing": "4:00 PM–8:00 PM IST",
+      "dates": [
+        {
+          "date": "2026-11-16",
+          "start": "16:00",
+          "end": "20:00",
+          "occasion": "Monday Maha Lingarchana",
+          "teluguOccasion": "సోమవారం మహా లింగార్చన"
+        },
+        {
+          "date": "2026-11-23",
+          "start": "16:00",
+          "end": "20:00",
+          "occasion": "Monday Maha Lingarchana",
+          "teluguOccasion": "సోమవారం మహా లింగార్చన"
+        },
+        {
+          "date": "2026-11-30",
+          "start": "16:00",
+          "end": "20:00",
+          "occasion": "Monday Maha Lingarchana",
+          "teluguOccasion": "సోమవారం మహా లింగార్చన"
+        },
+        {
+          "date": "2026-12-07",
+          "start": "16:00",
+          "end": "20:00",
+          "occasion": "Monday Maha Lingarchana",
+          "teluguOccasion": "సోమవారం మహా లింగార్చన"
+        }
+      ]
+    },
+    {
+      "id": "purusha-suktam",
+      "path": "/events/purusha-suktam-homams-2026/",
+      "name": "Purusha Suktam Homams",
+      "teluguName": "పురుషసూక్త హోమాలు",
+      "title": "Purusha Suktam Homams 2026 in Hyderabad | KKC",
+      "description": "KKC Purusha Suktam Homams on 20 and 24 November, 4 and 5 December 2026, 9:30–11:30 AM, at Dasa Hanuman and Durga Devi Temple, Hyderabad.",
+      "intro": "KKC conducts Purusha Suktam Homams on Shukla Ekadashi, Poornima, Krishna Ekadashi and Krishna Dwadashi during Karthika Masam.",
+      "teluguIntro": "కార్తీక మాసంలో శుక్ల ఏకాదశి, పౌర్ణమి, కృష్ణ ఏకాదశి మరియు కృష్ణ ద్వాదశి నాడు పురుషసూక్త హోమాలు నిర్వహించబడును.",
+      "venue": "homam",
+      "image": "purusha-suktam-bilingual-2026.jpg",
+      "timing": "9:30 AM–11:30 AM IST",
+      "dates": [
+        {
+          "date": "2026-11-20",
+          "start": "09:30",
+          "end": "11:30",
+          "occasion": "Shukla Ekadashi",
+          "teluguOccasion": "శుక్ల ఏకాదశి"
+        },
+        {
+          "date": "2026-11-24",
+          "start": "09:30",
+          "end": "11:30",
+          "occasion": "Poornima",
+          "teluguOccasion": "పౌర్ణమి"
+        },
+        {
+          "date": "2026-12-04",
+          "start": "09:30",
+          "end": "11:30",
+          "occasion": "Krishna Ekadashi",
+          "teluguOccasion": "కృష్ణ ఏకాదశి"
+        },
+        {
+          "date": "2026-12-05",
+          "start": "09:30",
+          "end": "11:30",
+          "occasion": "Krishna Dwadashi",
+          "teluguOccasion": "కృష్ణ ద్వాదశి"
+        }
+      ]
+    },
+    {
+      "id": "rudra-homam",
+      "path": "/events/rudra-homam-2026/",
+      "name": "Rudra Homam & Maha Poornahuti",
+      "teluguName": "రుద్రహోమం మరియు మహాపూర్ణాహుతి",
+      "title": "Rudra Homam & Maha Poornahuti, 8 December 2026 | KKC Hyderabad",
+      "description": "Join KKC Rudra Homam and Maha Poornahuti on Karthika Amavasya, 8 December 2026, 9:30 AM–12 noon, at Dasa Hanuman and Durga Devi Temple, Hyderabad.",
+      "intro": "The Karthika Masam programme concludes with Rudra Homam and Maha Poornahuti on Amavasya at Dasa Hanuman and Durga Devi Temple.",
+      "teluguIntro": "కార్తీక అమావాస్య నాడు రుద్రహోమం మరియు మహాపూర్ణాహుతి నిర్వహించబడును.",
+      "venue": "homam",
+      "image": "rudra-homam-bilingual-2026.jpg",
+      "timing": "9:30 AM–12:00 PM IST",
+      "dates": [
+        {
+          "date": "2026-12-08",
+          "start": "09:30",
+          "end": "12:00",
+          "occasion": "Karthika Amavasya",
+          "teluguOccasion": "కార్తీక అమావాస్య"
+        }
+      ]
+    }
+  ]
+}
