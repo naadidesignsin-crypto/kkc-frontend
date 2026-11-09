@@ -2878,3 +2878,6 @@ h3,
 .karthika-poster-venue a { color:var(--gold); text-decoration:underline; }
 
 .karthika-main-heading img.karthika-main-logo { width:48px; max-width:100%; min-width:0; height:66px; justify-self:end; object-fit:contain; }
+
+.brand-logo, .karthika-main-logo { mix-blend-mode:screen; }
+.karthika-main-heading img.karthika-main-logo { height:auto; }
