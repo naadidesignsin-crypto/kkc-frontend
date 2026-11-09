@@ -4,6 +4,11 @@ import mainPoster from '../assets/events/karthika-masam-main-2026.png';
 import lingarchanaPoster from '../assets/events/lingarchana-bilingual-2026.jpg';
 import homamPoster from '../assets/events/purusha-suktam-bilingual-2026.jpg';
 
+export const karthikaVenues = {
+  lingarchana: { address: "Plot No. 26, 2nd Floor, Vijaya Lakshmi Villa, Mahadevapuram, Gajularamaram, KPHB", mapUrl: 'https://maps.app.goo.gl/S9kyPnkr5G5kyVCZA' },
+  homam: { address: "Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053", mapUrl: 'https://maps.app.goo.gl/5un373U6LkZx8EYi8' },
+};
+
 export const karthikaEvent = {
   id: 'karthika-masam-2026',
   title: 'Karthika Masam 2026',
@@ -11,7 +16,7 @@ export const karthikaEvent = {
   description: 'Join KKC for Maha Lingarchana on four Mondays and five special Homams, concluding with Amavasya Rudra Homam and Maha Poornahuti.',
   date: '16 November – 8 December 2026',
   time: 'Mondays 4–8 PM · Homams 9:30–11:30 AM · Amavasya until 12 PM (IST)',
-  venue: "Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053",
+  venue: 'Daily Abhishekam / Maha Lingarchana: ' + karthikaVenues.lingarchana.address + '. Homams: ' + karthikaVenues.homam.address,
 };
 
 // Programme status follows the event dates in India, independent of visitor timezone.

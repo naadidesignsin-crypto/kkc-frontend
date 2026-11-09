@@ -1,6 +1,6 @@
 import { isLocalRegistration } from '../lib/mobile';
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { karthikaEvent as event, getKarthikaStatus, karthikaPosters } from '../data/karthikaEvent';
+import { karthikaEvent as event, getKarthikaStatus, karthikaPosters, karthikaVenues } from '../data/karthikaEvent';
 import KarthikaPosters from './KarthikaPosters';
 import { readRegistrations, saveRegistration, createRegistrationWorkbook, type Registration } from '../lib/registrations';
 import { printRegistrations } from '../lib/registrationPdf';
@@ -152,7 +152,7 @@ export default function EventRegistration({ presentation = 'website', onRegister
   }
 
   const details = <dl className="karthika-details">
-    {(['date', 'time', 'venue'] as const).map(key => <div key={key}><dt>{key}</dt><dd>{event[key]}</dd></div>)}
+    {(['date', 'time', 'venue'] as const).map(key => <div key={key}><dt>{key}</dt><dd>{key === 'venue' ? <>{(['lingarchana', 'homam'] as const).map(type => <p key={type}><strong>{type === 'lingarchana' ? 'Daily Abhishekam / Maha Lingarchana' : 'Purusha Suktam / Rudra Homams'}</strong><br/><a href={karthikaVenues[type].mapUrl} target="_blank" rel="noopener noreferrer">{karthikaVenues[type].address} ↗</a></p>)}</> : event[key]}</dd></div>)}
   </dl>;
 
   return <section className={presentation === "app" ? "karthika-section--app" : "karthika-section section-wrap"} id="karthika-registration" aria-labelledby="karthika-heading">

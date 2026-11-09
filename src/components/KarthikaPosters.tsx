@@ -1,16 +1,17 @@
+import logo from '../assets/kkc-logo.png';
 
 import { useState } from 'react';
-import abhishekamPhoto from '../assets/events/parthiva-sivalingam-abhishekam-2026.png';
-import { karthikaPosters, karthikaMainContent } from '../data/karthikaEvent';
+import abhishekamPhoto from '../assets/events/parthiva-lingam-2026.png';
+import { karthikaPosters, karthikaMainContent, karthikaVenues } from '../data/karthikaEvent';
 
 function MainInvitation() {
   return <article className="karthika-main-invitation" lang="te" aria-label="కార్తీక మాస మహోత్సవాలు">
     <header className="karthika-main-heading">
-      <img className="karthika-abhishekam-image" src={abhishekamPhoto} alt="Parthiva Sivalingam Abhishekam with the KKC logo" width="260" height="174" />
+      <img className="karthika-abhishekam-image" src={abhishekamPhoto} alt="Clay Parthiva Sivalingam Abhishekam" width="260" height="174" />
       <div><span className="karthika-main-brand" lang="en">KUNDALINI KRIYA CHAITANYAM</span>
         <h3>కార్తీక మాస మహోత్సవాలు</h3>
         <span className="karthika-main-year" lang="en">KARTHIKA MASAM 2026</span></div>
-      <span className="karthika-main-om" aria-hidden="true">ఓం</span>
+      <img className="karthika-main-logo" src={logo} alt="KKC logo" width="64" height="88" />
     </header>
     <div className="karthika-main-copy">
       {karthikaMainContent.map((paragraph, i) => <section className={'karthika-main-paragraph karthika-main-paragraph--' + i} key={i}>
@@ -23,10 +24,11 @@ function MainInvitation() {
 }
 
 function Schedule({ poster }: { poster: typeof karthikaPosters[number] }) {
+  const venue = poster.id === "lingarchana" ? karthikaVenues.lingarchana : karthikaVenues.homam;
   return <div className="karthika-schedule-summary">
     <p className="eyebrow">Karthika Masam 2026</p>
     <h3>{poster.title}<span lang="te">{poster.teluguTitle}</span></h3>
-    <p className="karthika-poster-timing">{poster.timing}</p>
+    <p className="karthika-poster-timing">{poster.timing}</p><p className="karthika-poster-venue"><strong>Venue / వేదిక</strong><br/><a href={venue.mapUrl} target="_blank" rel="noopener noreferrer">{venue.address} ↗</a></p>
     <ul className="karthika-schedule-cards">
       {poster.dates.map(date => {
         const [day, weekday, ...occasion] = date.split(' · ');

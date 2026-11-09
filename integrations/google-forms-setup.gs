@@ -63,7 +63,7 @@
       // Store immediately so rerunning after an interruption never creates duplicate forms.
       properties.setProperty('KKC_FORM_ID', form.getId());
       if (form.supportsAdvancedResponderPermissions()) form.setPublished(false);
-      form.setDescription((environment === 'local' ? 'TEST REGISTRATIONS ONLY. ' : '') + 'Register for the KKC Karthika Masam devotional gathering. 16 November–8 December 2026. Venue: Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053. Gothram, Namam and phone number are required. Email, address and note are optional. Your details are shared with the KKC organising team.');
+      form.setDescription((environment === 'local' ? 'TEST REGISTRATIONS ONLY. ' : '') + 'Register for the KKC Karthika Masam devotional gathering. 16 November–8 December 2026. Venues: Daily Abhishekam / Maha Lingarchana: Plot No. 26, 2nd Floor, Vijaya Lakshmi Villa, Mahadevapuram, Gajularamaram, KPHB. Purusha Suktam / Rudra Homams: Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053. Gothram, Namam and phone number are required. Email, address and note are optional. Your details are shared with the KKC organising team.');
       form.setCollectEmail(false);
       form.setLimitOneResponsePerUser(false);
       form.setPublishingSummary(false);
@@ -148,6 +148,7 @@
       const form = FormApp.openById(formId);
       if (form.getDestinationId() !== sheet.getId()) throw new Error('The form belongs to a different Sheet.');
       ensureKkcPaymentFields_(form);
+      form.setDescription('KKC Karthika Masam 2026. Venues: ' + kkcVenueSummary_() + ' Gothram, Namam and phone are required. Email, address and note are optional.');
       PropertiesService.getScriptProperties().setProperties({
         KKC_WEBAPP_FORM_ID: formId,
         KKC_WEBAPP_SHEET_ID: sheet.getId(),
@@ -174,7 +175,7 @@
       const settings = PropertiesService.getScriptProperties();
       const upi = settings.getProperty('KKC_VERIFIED_UPI_ID') || '7981041123@axl';
       template.verifiedUpi = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+$/.test(upi) ? upi : '';
-      template.venue = settings.getProperty('KKC_EVENT_VENUE') || "Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053";
+      template.venue = kkcVenueSummary_();
       const source = event && event.parameter && event.parameter.source;
       template.initialSource = typeof source === 'string' && /^[a-zA-Z0-9_-]{1,40}$/.test(source) ? source : 'direct';
       template.initialLanguage = event && event.parameter && event.parameter.lang === 'te' ? 'te' : 'en';
@@ -390,7 +391,7 @@
         'Dakshina reported: INR ' + record.amount,
         'Registration reference: ' + record.reference,
         environment === 'local' ? 'Test acknowledgement only. No payment has been verified.' : 'Payment is awaiting manual verification by the KKC team.',
-        'Venue: Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053.',
+        'Venues: ' + kkcVenueSummary_(),
         'For assistance: 7981041123'
       ];
       return 'https://wa.me/91' + record.phone + '?text=' + encodeURIComponent(lines.join('\n'));
@@ -436,3 +437,7 @@
         SpreadsheetApp.getUi().alert('Thank-you links are ready in the KKC WhatsApp tab. Open a link, review the message, press Send in WhatsApp, then change its Send status to Sent manually.');
       } finally { lock.releaseLock(); }
     }
+
+function kkcVenueSummary_() {
+  return "Daily Abhishekam / Maha Lingarchana: Plot No. 26, 2nd Floor, Vijaya Lakshmi Villa, Mahadevapuram, Gajularamaram, KPHB. Purusha Suktam / Rudra Homams: Dasa Hanuman and Durga Devi Temple, 119, Chandulal Baradari Colony, Nayeem Gulshan Colony, Ramnas Pura, Hyderabad, Telangana 500053.";
+}

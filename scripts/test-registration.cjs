@@ -49,3 +49,7 @@ context.kkcAddThankYouRow_(queue,record,'prod',known);
 assert.equal(writtenRows,1);
 assert.ok(link.startsWith('https://wa.me/919876543210?text='));
 console.log('PASS: correct WhatsApp recipient, message details, pending payment, local test warning, invalid-number rejection and duplicate prevention.');
+
+assert.match(context.kkcVenueSummary_(), /Daily Abhishekam \/ Maha Lingarchana: Plot No\. 26, 2nd Floor, Vijaya Lakshmi Villa/);
+assert.match(context.kkcVenueSummary_(), /Purusha Suktam \/ Rudra Homams: Dasa Hanuman and Durga Devi Temple/);
+console.log('PASS: separate Abhishekam/Lingarchana and Homam venues.');

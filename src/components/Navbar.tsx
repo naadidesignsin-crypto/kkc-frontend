@@ -1,4 +1,4 @@
-import logo from "../assets/Logo.png";
+import logo from "../assets/kkc-logo.png";
 import { getPlanetIcon } from "../data/planets";
 
 const sunIcon = getPlanetIcon("surya");
