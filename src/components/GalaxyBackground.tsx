@@ -67,7 +67,7 @@ function GalaxyBackground() {
 
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(245, 209, 122, ${star.alpha})`;
+        ctx.fillStyle = `rgba(240, 240, 240, ${star.alpha})`;
         ctx.fill();
       }
 
@@ -84,7 +84,7 @@ function GalaxyBackground() {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(214, 170, 82, ${opacity})`;
+            ctx.strokeStyle = `rgba(190, 190, 190, ${opacity})`;
             ctx.lineWidth = 0.55;
             ctx.stroke();
           }

@@ -30,7 +30,7 @@ export async function openExternalLink(value: string): Promise<void> {
   const url = new URL(value);
   if (!['https:', 'http:', 'tel:', 'mailto:', 'upi:'].includes(url.protocol)) throw new Error('This link is unavailable.');
   if (Capacitor.isNativePlatform() && ['https:', 'http:'].includes(url.protocol)) {
-    await Browser.open({ url: url.href, toolbarColor: '#100c06' });
+    await Browser.open({ url: url.href, toolbarColor: '#000000' });
   } else if (['tel:', 'mailto:', 'upi:'].includes(url.protocol)) {
     window.location.href = url.href;
   } else {
