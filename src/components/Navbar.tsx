@@ -5,6 +5,7 @@ const sunIcon = getPlanetIcon("surya");
 const moonIcon = getPlanetIcon("chandra");
 
 const navItems = [
+  { label: "Astrology", href: "#astrology-booking", icon: moonIcon, iconText: "A", alt: "Astrology icon" },
   {
     label: "Home",
     href: "#home",

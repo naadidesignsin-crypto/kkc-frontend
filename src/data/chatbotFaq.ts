@@ -1,3 +1,4 @@
+import facts from './seoEvents.json';
 export interface ChatbotFaq {
   id: string;
   question: string;
@@ -19,7 +20,7 @@ export const chatbotFaqs: ChatbotFaq[] = [
     id: "how-to-donate",
     question: "How can I donate?",
     answer:
-      "For now, please use the Donate button or WhatsApp option on the website. Online payment gateway integration is parked and will be added later after Razorpay setup.",
+      "For Karthika Masam Seva, use the registration form and its payment QR. For astrology, choose the INR 999 / 10-minute or INR 1,500 / 20-minute call in Astrology Services. KKC verifies payments manually.",
     category: "Donation",
     keywords: ["donate", "donation", "payment", "seva", "amount", "razorpay"],
   },
@@ -35,7 +36,7 @@ export const chatbotFaqs: ChatbotFaq[] = [
     id: "upcoming-events",
     question: "Where can I see upcoming events?",
     answer:
-      "Upcoming events are shown on the website under the Upcoming Events section. More event and video panels can be added dynamically in the next phase.",
+      "Karthika Masam 2026: 16 November–8 December. " + facts.programmes.map(programme => programme.description).join(" "),
     category: "Events",
     keywords: ["events", "upcoming", "program", "schedule", "event"],
   },
@@ -43,7 +44,7 @@ export const chatbotFaqs: ChatbotFaq[] = [
     id: "astrology-consultation",
     question: "How do I book astrology consultation?",
     answer:
-      "Use the Contact section or WhatsApp button to send your name, phone number, and requirement. The KKC team will respond with available consultation timings.",
+      "Astrology calls cost INR 999 for 10 minutes or INR 1,500 for 20 minutes. Choose a call below, share your question, and send your enquiry to KKC on WhatsApp. KKC confirms availability and verifies payment manually. Personal readings are provided by the astrologer during the call.",
     category: "Astrology",
     keywords: ["astrology", "consultation", "booking", "kundali", "horoscope", "jyotish"],
   },
@@ -59,6 +60,14 @@ export const chatbotFaqs: ChatbotFaq[] = [
 
 export function findFaqAnswer(message: string): ChatbotFaq {
   const normalized = message.trim().toLowerCase();
+
+  if (/astrolog|kundali|horoscope|jyotish|marriage|career|birth chart|zodiac|జ్యోతిష|జాతక|999|1500|1,500|10 min|20 min/.test(normalized)) {
+    return chatbotFaqs.find(faq => faq.id === "astrology-consultation")!;
+  }
+
+  if (/event|homam|lingarchana|karthika|karthik|venue|schedule|కార్తీక|హోమ|లింగార్చన/.test(normalized)) {
+    return chatbotFaqs.find(faq => faq.id === "upcoming-events")!;
+  }
 
   const exactMatch = chatbotFaqs.find(
     (faq) => faq.question.toLowerCase() === normalized

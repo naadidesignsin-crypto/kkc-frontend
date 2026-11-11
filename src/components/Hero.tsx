@@ -1,8 +1,10 @@
+import AstrologySpotlight from './AstrologySpotlight';
 import { ongoingEvent } from "../data/events";
 
 function Hero() {
   return (
     <section className="hero section-wrap" id="home">
+      <AstrologySpotlight />
       <div className="hero-feature-grid reveal-card">
         <div className="hero-text-content">
           <p className="eyebrow">{ongoingEvent.registrationUrl ? 'Karthika Masam · Sacred gatherings' : 'Aligning stars, science, and soul'}</p>

@@ -2902,3 +2902,90 @@ h3,
 
 /* Transparent black master: white display treatment on dark surfaces. */
 .navbar .brand-logo,.karthika-main-heading img.karthika-main-logo{filter:invert(1) grayscale(1);mix-blend-mode:normal;background:transparent;object-fit:contain;clip-path:none}
+
+.chatbot-actions{display:grid;gap:8px}.chatbot-actions .chatbot-whatsapp{margin:0;min-height:42px}.chatbot-panel{overflow-y:auto}.chatbot-messages{min-height:100px}
+
+/* Quiet monochrome support buttons; WhatsApp alone gets its brand-green accent. */
+.whatsapp-panel{min-height:48px;padding:0 15px;gap:9px;background:#111;border:1px solid #484848;box-shadow:0 4px 16px rgba(0,0,0,.28);font-size:14px;font-weight:600}
+.whatsapp-icon{width:23px;height:23px;flex:none;color:#25d366}
+.whatsapp-panel:hover{border-color:#25d366;background:#171717}
+.chatbot-launcher{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:0;width:auto;height:46px;padding:0 15px;background:#151515;border:1px solid #484848;color:#ededed;font-size:14px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.28)}
+.chatbot-launcher-icon{width:20px;height:20px;flex:none}
+.chatbot-launcher:hover{background:#252525;border-color:#888}
+.whatsapp-panel:focus-visible,.chatbot-launcher:focus-visible{outline:2px solid #fff;outline-offset:4px}
+@media(max-width:560px){.whatsapp-panel{min-height:46px;padding:0 13px;font-size:13px}.chatbot-launcher{height:44px;padding:0 13px;font-size:13px}}
+
+/* Guided assistant: clear action cards, compact prompts and neutral contrast. */
+.chatbot-panel--guided{grid-template-rows:auto auto minmax(100px,1fr) auto auto;width:min(430px,calc(100vw - 24px));height:min(740px,calc(100dvh - 110px));gap:12px;padding:16px;overflow:hidden;background:#0c0c0c;border-color:#555;border-radius:22px}
+.chatbot-panel--guided .chatbot-header{position:static;background:transparent;padding:0}
+.chatbot-panel--guided .chatbot-header h3{font-size:20px}
+.chatbot-panel--guided .eyebrow{font-size:10px;margin:0 0 6px;letter-spacing:.15em;color:#bbb}
+.chatbot-panel--guided:has(.astrology-intake){grid-template-rows:auto auto minmax(100px,1fr)}
+.chat-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chat-choice{display:flex;align-items:center;gap:9px;min-height:65px;padding:12px;border:1px solid #444;border-radius:13px;background:#191919;text-align:left;transition:background .15s,border-color .15s}
+.chat-choice strong,.chat-choice small{display:block}
+.chat-choice strong{font-size:12px;line-height:1.35;color:#f5f5f5}
+.chat-choice small{margin-top:4px;font-size:10px;color:#bbb;line-height:1.35}
+.chat-choice--featured{grid-column:1/-1;background:#ededed;border-color:#ededed;gap:12px}
+.chat-choice--featured strong,.chat-choice--featured small,.chat-choice--featured>span{color:#111}
+.chat-choice--featured>span:last-child{margin-left:auto;font-size:22px}
+.chat-choice-icon{font-size:27px}
+.chat-choice:hover{background:#2b2b2b;border-color:#aaa}
+.chat-choice--featured:hover{background:#fff}
+.chat-choice[aria-pressed=true]{outline:1px solid #aaa;outline-offset:2px}
+.chatbot-panel--guided .chatbot-messages{padding:4px 5px 8px 0;min-height:0;overscroll-behavior:contain}
+.chat-step-label{display:flex;justify-content:space-between;gap:8px;font-size:10px;letter-spacing:.08em;color:#bbb}
+.astrology-intake progress{width:100%;height:5px;accent-color:#eee;margin:8px 0}
+.astrology-intake p{font-size:13px;line-height:1.55;color:#c5c5c5;margin:10px 0}
+.astrology-intake .chat-privacy{font-size:11px;color:#aaa;margin:4px 0 18px}
+.astrology-intake label strong{font-size:18px}
+.astrology-intake input:not([type=checkbox]){width:100%;max-width:100%;min-width:0;min-height:46px;background:#1a1a1a;border:1px solid #777;border-radius:10px;padding:10px;color:#fff;font:inherit;color-scheme:dark}
+.astrology-intake input:disabled{opacity:.4}
+.chat-step-actions{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.chat-step-actions button,.chat-edit-details{min-height:42px;padding:10px 16px;border-radius:10px;border:1px solid #666;background:#1b1b1b;color:#eee}
+.chat-step-actions .chat-next,.chat-next{background:#eee;color:#111;border-color:#eee;font-weight:700}
+.chat-unknown{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12px}
+.chat-unknown input{accent-color:white}
+.astrology-intake h4,.chat-event-card h4{font-size:17px;margin:8px 0 14px}
+.chat-call-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chat-call-options button{display:grid;gap:6px;min-height:90px;padding:14px;background:#1b1b1b;border:1px solid #666;border-radius:12px}
+.chat-call-options button[aria-pressed=true]{background:#eee;border-color:white}
+.chat-call-options button[aria-pressed=true] strong,.chat-call-options button[aria-pressed=true] span{color:#111}
+.chat-call-options span{font-size:24px;font-weight:700}
+.chat-details{margin:0;font-size:13px;overflow-wrap:anywhere}
+.chat-details>div{padding:9px 0;border-bottom:1px solid #333}
+.chat-details dt{font-size:11px;color:#aaa;margin-bottom:3px}
+.chat-details dd{margin:0;color:#fff}
+.chat-send-whatsapp{display:block;padding:13px 12px;border:1px solid #25d366;border-radius:11px;color:#25d366;text-align:center;font-weight:700;font-size:13px}
+.chat-edit-details{margin-top:12px;width:100%}
+.chat-payment-link{display:block;margin-top:14px;font-size:12px;text-decoration:underline}
+.chat-support-link{font-size:12px;text-align:center;color:#ccc;padding:8px}
+.chat-event-list{display:grid;gap:12px}
+.chat-event-intro{font-size:12px;color:#bbb;margin:0}
+.chat-event-card{border:1px solid #444;border-radius:13px;background:#171717;padding:14px}
+.chat-event-card p{font-size:12px;line-height:1.6;margin:8px 0;color:#ccc}
+.chat-event-card strong{font-size:13px}
+.chat-event-card>div{display:flex;gap:18px;font-size:12px;text-decoration:underline;margin-top:12px}
+.chat-event-register{display:block;padding:12px;text-align:center;border-radius:10px;font-size:13px}
+.chatbot-panel--guided :focus-visible{outline:2px solid white;outline-offset:3px}
+@media(max-width:560px){.chatbot-panel--guided{right:12px;bottom:76px;max-height:calc(100dvh - 94px);padding:13px;gap:10px}.chat-choice{min-height:59px;padding:10px}.chatbot-panel--guided .chatbot-header h3{font-size:18px}}
+
+.astrology-intake select{width:100%;min-height:46px;padding:10px;border:1px solid #777;border-radius:10px;background:#1a1a1a;color:#fff;font:inherit;color-scheme:dark}
+
+/* Astrology discovery near the top of the homepage. */
+.hero:has(.astrology-spotlight){display:flex;flex-direction:column;align-items:stretch;gap:22px}
+.astrology-spotlight{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 24px;border:1px solid #666;border-radius:18px;background:linear-gradient(110deg,#202020,#101010);box-shadow:0 8px 28px rgba(0,0,0,.25)}
+.astrology-spotlight-copy{display:flex;align-items:center;gap:18px;min-width:0}
+.astrology-spotlight-symbol{display:grid;place-items:center;width:52px;height:52px;border:1px solid #666;border-radius:50%;font-size:35px;flex:none;color:#fff}
+.astrology-spotlight-copy p{margin:0 0 5px;font-size:10px;letter-spacing:.13em;color:#ccc}
+.astrology-spotlight h2{font-size:clamp(19px,2vw,25px);line-height:1.25;margin:0 0 6px}
+.astrology-spotlight-copy>div>span{font-size:12px;line-height:1.5;color:#bbb;display:block;max-width:48ch}
+.astrology-spotlight-actions{display:flex;align-items:center;gap:20px;flex:none}
+.astrology-spotlight-prices{display:grid;gap:6px;font-size:12px;color:#bbb}
+.astrology-spotlight-prices strong{font-size:20px;font-weight:700;color:#fff}
+.astrology-spotlight .primary-btn{min-height:46px;padding:12px 18px;font-size:13px;white-space:nowrap}
+.nav-links{gap:18px}
+.nav-links .nav-link{gap:8px;font-size:.9rem}
+@media(max-width:1180px) and (min-width:901px){.navbar{flex-wrap:wrap;gap:6px}.nav-links{width:100%;justify-content:center}}
+@media(max-width:900px){.astrology-spotlight{align-items:flex-start;flex-direction:column;gap:16px}.astrology-spotlight-actions{justify-content:space-between;width:100%}.astrology-spotlight-prices{display:flex;gap:18px}}
+@media(max-width:560px){.hero:has(.astrology-spotlight){gap:16px}.astrology-spotlight{padding:16px;gap:14px}.astrology-spotlight-copy{gap:10px}.astrology-spotlight-symbol{width:34px;height:34px;font-size:24px}.astrology-spotlight-copy p{font-size:8px;letter-spacing:.08em}.astrology-spotlight h2{font-size:18px}.astrology-spotlight-copy>div>span{font-size:11px}.astrology-spotlight-actions{flex-wrap:wrap;gap:12px}.astrology-spotlight-prices{justify-content:space-between;width:100%;gap:10px}.astrology-spotlight-prices strong{font-size:19px}.astrology-spotlight .primary-btn{width:100%}}

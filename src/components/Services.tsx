@@ -1,3 +1,5 @@
+import { openAstrologyChat } from '../lib/astrologyChat';
+import AstrologyBooking from './AstrologyBooking';
 import { services } from '../data/content';
 
 function Services() {
@@ -5,7 +7,9 @@ function Services() {
     <section id="services" className="content-section section-wrap">
       <div className="section-heading">
         <p className="eyebrow">Astrology Services</p>
-        <h2>Practical guidance supported by timing, discipline, and clear communication.</h2>
+        <h2>Personal astrology guidance. Choose a call that suits you.</h2>
+        <p>10 minutes for ₹999 or 20 minutes for ₹1,500. Share your birth details and questions with KKC.</p>
+        <button className="primary-btn" type="button" onClick={openAstrologyChat}>Start consultation in chat ↗</button>
       </div>
 
       <div className="card-grid">
@@ -16,6 +20,7 @@ function Services() {
           </article>
         ))}
       </div>
+      <AstrologyBooking />
     </section>
   );
 }
