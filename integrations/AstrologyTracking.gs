@@ -1,4 +1,35 @@
-// Add this file to the existing Sheet-bound KKC Apps Script project.
+// STANDALONE ASTROLOGY PROJECT ONLY. Do not add to the Karthika Masam script.
+function kkcAstrologyOrganiser_() {
+  var active = Session.getActiveUser().getEmail();
+  var effective = Session.getEffectiveUser().getEmail();
+  if (!active || active !== effective) throw new Error('Run setup from the astrology spreadsheet owner account.');
+}
+function configureLocalAstrologyTracking() { kkcConfigureAstrology_("local"); }
+function configureProductionAstrologyTracking() { kkcConfigureAstrology_("prod"); }
+function kkcConfigureAstrology_(environment) {
+  kkcAstrologyOrganiser_();
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  if (!book || !book.getName().endsWith("_" + environment)) throw new Error("Use a NEW astrology sheet named KKC_Astrology_" + environment + ". Do not use the event registration sheet.");
+  var properties = PropertiesService.getScriptProperties();
+  if (properties.getProperty("KKC_WEBAPP_FORM_ID") || properties.getProperty("KKC_WEBAPP_SHEET_ID")) throw new Error("This is the Karthika Masam project. Create a separate astrology project.");
+  var sheets = book.getSheets();
+  if (sheets.some(function(sheet) { return /^(Form Responses|KKC Setup|WhatsApp)/i.test(sheet.getName()); })) throw new Error("Do not use the Karthika Masam spreadsheet. Create a new astrology spreadsheet.");
+  properties.setProperties({KKC_ASTRO_SHEET_ID:book.getId(), KKC_ASTRO_ENVIRONMENT:environment});
+  kkcAstrologySheet_({sheetId:book.getId(), environment:environment});
+  SpreadsheetApp.getUi().alert("Astrology tracker ready for _" + environment + ". Deploy this ASTROLOGY project as a new Web app. Do not update the Karthika Masam deployment.");
+}
+function kkcAstrologyConfiguration_() {
+  var properties = PropertiesService.getScriptProperties();
+  var sheetId = properties.getProperty("KKC_ASTRO_SHEET_ID");
+  var environment = properties.getProperty("KKC_ASTRO_ENVIRONMENT");
+  if (!sheetId || ["local","prod"].indexOf(environment) < 0) throw new Error("Configure this separate astrology project first.");
+  return {sheetId:sheetId, environment:environment};
+}
+function doGet(event) {
+  if (event && event.parameter && event.parameter.page === "astrology-tracker") return kkcAstrologyBridge_(event);
+  var config = kkcAstrologyConfiguration_();
+  return HtmlService.createHtmlOutput("KKC Astrology tracker _" + config.environment + " is configured. Submit enquiries from kkcorg.com.").setTitle("KKC Astrology Tracking");
+}
 function kkcAstrologyBridge_(event) {
   var p = event && event.parameter || {};
   var origin = typeof p.parentOrigin === 'string' ? p.parentOrigin : '';
@@ -15,10 +46,11 @@ function kkcAstrologyHeaders_() {
   return ['Registered at (IST)', 'Enquiry reference', 'Request ID', 'Name', 'Gender', 'WhatsApp', 'Date of birth', 'Birthplace', 'Birth time (local)', 'Consultation topic', 'Query', 'Call duration (minutes)', 'Fee (INR)', 'Preferred call time (IST)', 'Reported paid', 'Payment reference', 'Payment status', 'Booking status', 'Environment'];
 }
 function configureKkcAstrologyTracking() {
-  assertKkcOrganiser_();
-  var config = kkcWebAppConfiguration_();
-  kkcAstrologySheet_(config);
-  SpreadsheetApp.getUi().alert('Customer register ready: AstrologyCustomers_' + config.environment + '. Deploy a new web app version after adding AstrologyTracker.html and updating Code.gs.');
+  kkcAstrologyOrganiser_();
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var match = book && book.getName().match(/_(local|prod)$/);
+  if (!match) throw new Error('Name your NEW astrology sheet KKC_Astrology_local or KKC_Astrology_prod.');
+  kkcConfigureAstrology_(match[1]);
 }
 function kkcAstrologySheet_(config) {
   var book = SpreadsheetApp.openById(config.sheetId);
@@ -33,7 +65,7 @@ function kkcAstrologySheet_(config) {
   return sheet;
 }
 function saveKkcAstrologyCustomer(input) {
-  var config = kkcWebAppConfiguration_();
+  var config = kkcAstrologyConfiguration_();
   if (!input || input.consent !== true) throw new Error('Please agree to saving your consultation details.');
   if (input.environment !== config.environment) throw new Error('The local/prod tracking configuration does not match. Please contact KKC.');
   if (!/^[a-zA-Z0-9-]{20,80}$/.test(input.requestId || '') || input.website) throw new Error('Invalid enquiry. Please reopen the booking page.');

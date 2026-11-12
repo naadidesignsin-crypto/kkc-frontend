@@ -169,7 +169,6 @@
     }
 
     function doGet(event) {
-      if (event && event.parameter && event.parameter.page === "astrology-tracker") return kkcAstrologyBridge_(event);
       const config = kkcWebAppConfiguration_();
       const template = HtmlService.createTemplateFromFile('Registration');
       template.environment = config.environment;
