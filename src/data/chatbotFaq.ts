@@ -1,3 +1,4 @@
+import { findAstrologyTopic } from './astrologyTopics';
 import facts from './seoEvents.json';
 export interface ChatbotFaq {
   id: string;
@@ -60,6 +61,8 @@ export const chatbotFaqs: ChatbotFaq[] = [
 
 export function findFaqAnswer(message: string): ChatbotFaq {
   const normalized = message.trim().toLowerCase();
+
+  if (findAstrologyTopic(normalized)) return chatbotFaqs.find(faq => faq.id === "astrology-consultation")!;
 
   if (/astrolog|kundali|horoscope|jyotish|marriage|career|birth chart|zodiac|జ్యోతిష|జాతక|999|1500|1,500|10 min|20 min/.test(normalized)) {
     return chatbotFaqs.find(faq => faq.id === "astrology-consultation")!;

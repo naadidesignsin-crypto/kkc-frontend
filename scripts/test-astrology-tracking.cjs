@@ -1,0 +1,18 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),path=require('path');
+const rows=[];let environment='local';const sheet={getLastRow:()=>rows.length,getRange:(row,col,numRows,numCols)=>({setValues(values){for(let i=0;i<values.length;i++){if(!rows[row-1+i])rows[row-1+i]=[];for(let j=0;j<values[i].length;j++)rows[row-1+i][col-1+j]=values[i][j];}return this;},getDisplayValues(){return rows.slice(row-1,row-1+numRows).map(r=>r.slice(col-1,col-1+numCols).map(String));},setNumberFormat(){return this;},setFontWeight(){return this;}}),setFrozenRows(){}};
+let exists=false;const context=vm.createContext({Date,console,kkcWebAppConfiguration_:()=>({sheetId:'sheet',environment}),assertKkcOrganiser_(){},SpreadsheetApp:{openById:()=>({getSheetByName:name=>{assert.equal(name,'AstrologyCustomers_'+environment);return exists?sheet:null;},insertSheet:()=>{exists=true;return sheet;}})},LockService:{getScriptLock:()=>({tryLock:()=>true,releaseLock(){}})},Utilities:{formatDate:()=> '2026-11-12',getUuid:()=> 'abcdef12-3456-7890-abcd-ef1234567890'}});
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../integrations/AstrologyTracking.gs'),'utf8'),context);
+const customer={name:'Test Person',gender:'Female',phone:'9876543210',dob:'1990-04-12',birthplace:'Hyderabad',birthtime:'06:30',topic:'education',query:'Test enquiry',minutes:10,consent:true,requestId:'test-astrology-request-0001',environment:'local',fee:1};
+const first=context.saveKkcAstrologyCustomer(customer);assert.equal(first.ok,true);assert.equal(rows.length,2);assert.equal(rows[1][12],999);assert.equal(rows[1][6],'1990-04-12');assert.equal(rows[1][3],'Test Person');assert.equal(rows[1][17],'Enquiry - slot not confirmed');assert.equal(rows[1][16],'not_paid');
+assert.equal(context.saveKkcAstrologyCustomer(customer).reference,first.reference);assert.equal(rows.length,2);
+assert.throws(()=>context.saveKkcAstrologyCustomer({...customer,consent:false}),/agree/);
+assert.throws(()=>context.saveKkcAstrologyCustomer({...customer,environment:'prod'}),/configuration/);
+assert.throws(()=>context.saveKkcAstrologyCustomer({...customer,minutes:30}),/10-minute/);
+assert.throws(()=>context.saveKkcAstrologyCustomer({...customer,dob:'2026-02-30'}),/birth/);
+assert.throws(()=>context.saveKkcAstrologyCustomer({...customer,dob:'2099-01-01'}),/birth/);
+assert.throws(()=>context.saveKkcAstrologyCustomer({...customer,topic:'invalid'}),/topic/);
+assert.throws(()=>context.saveKkcAstrologyCustomer({...customer,birthtime:'25:00'}),/birth time/);
+context.saveKkcAstrologyCustomer({...customer,requestId:'test-astrology-request-0002',minutes:20,name:'=IMPORTDATA("bad")',query:'+formula',reportedPaid:true});
+assert.equal(rows[2][12],1500);assert.ok(rows[2][3].startsWith("'="));assert.ok(rows[2][10].startsWith("'+"));assert.equal(rows[2][16],'reported_paid_pending_verification');
+environment='prod';context.saveKkcAstrologyCustomer({...customer,requestId:'test-astrology-request-0003',environment:'prod',birthtime:'Unknown'});
+console.log('PASS astrology tracking server: private environment tab, server-derived fees, customer DOB/name, consent, malformed/future DOB, valid time, safe cells, idempotent retries and unverified payment status.');

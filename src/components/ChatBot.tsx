@@ -14,7 +14,7 @@ function ChatBot() {
   const [messages, setMessages] = useState<Message[]>([{ role: 'BOT', text: 'Namaste! Book an astrology call, explore the Karthika Masam programme, or ask about Seva. Choose an option above to begin.' }]);
   const scroll = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const open = () => { setQuery(''); setView('astrology'); setIsOpen(true); };
+    const open = (event: Event) => { setQuery((event as CustomEvent<{ query?: string }>).detail?.query || ''); setView('astrology'); setIsOpen(true); };
     window.addEventListener(ASTROLOGY_CHAT_EVENT, open);
     return () => window.removeEventListener(ASTROLOGY_CHAT_EVENT, open);
   }, []);

@@ -1,3 +1,6 @@
+import AstrologyCustomerRecord from './AstrologyCustomerRecord';
+import type { AstrologyCustomer } from '../lib/astrologyTracking';
+import { astrologyTopics, astrologyTopicLabel } from '../data/astrologyTopics';
 import { astrologyNameIcon, astrologyBirthDate, astrologyBirthTime } from '../lib/astrologyMessage';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
@@ -9,6 +12,7 @@ export default function AstrologyBooking() {
   const [minutes, setMinutes] = useState(10);
   const [paid, setPaid] = useState(false);
   const [unknownTime, setUnknownTime] = useState(false);
+  const [customer, setCustomer] = useState<AstrologyCustomer | null>(null);
   const [ready, setReady] = useState('');
   const plan = plans.find(p => p.minutes === minutes)!;
   function changePlan(value: number) { setMinutes(value); setPaid(false); setReady(''); }
@@ -29,18 +33,20 @@ export default function AstrologyBooking() {
       '📅 *Date of birth:* ' + astrologyBirthDate(String(data.get('dob'))),
       '📍 *Birthplace:* ' + String(data.get('birthplace')).trim(),
       '🕒 *Birth time:* ' + (unknownTime ? 'Unknown' : astrologyBirthTime(String(data.get('birthtime')))),
+      '✦ *Consultation topic:* ' + astrologyTopicLabel(String(data.get('topic') || '')),
       '💬 *Query:* ' + String(data.get('query')).trim(),
       '🗓️ *Preferred call time:* ' + (String(data.get('time') || '').trim() || 'Please suggest an available slot'),
       paid ? '⏳ *Payment:* I report paying INR ' + plan.amount + '. Please verify payment.' : '⏳ *Payment:* Not paid yet. Please confirm availability and payment instructions.',
       '🧾 *Transaction reference:* ' + (String(data.get('reference') || '').trim() || 'Not provided'),
       'I understand that KKC must verify payment and confirm the call slot.'
     ].join('\n');
+    setCustomer({ name: String(data.get('name')).trim(), gender: String(data.get('gender')), phone, dob: String(data.get('dob')), birthplace: String(data.get('birthplace')).trim(), birthtime: unknownTime ? 'Unknown' : String(data.get('birthtime')), topic: String(data.get('topic') || ''), query: String(data.get('query')).trim(), minutes: plan.minutes, preferredTime: String(data.get('time') || ''), reportedPaid: paid, paymentReference: String(data.get('reference') || '') });
     setReady('https://wa.me/917981041123?text=' + encodeURIComponent(text));
   }
   return <section id="astrology-booking" className="astrology-booking" aria-labelledby="astrology-booking-title">
     <div><p className="eyebrow">Personal astrology consultation</p>
       <h3 id="astrology-booking-title">Ask your query. Choose your call.</h3>
-      <p>Share your question with the KKC astrologer. We will confirm an available call time on WhatsApp.</p>
+      <p>Consultation hours: 2 PM–9 PM IST. Share your question; KKC confirms your date and call time on WhatsApp.</p>
     </div>
     <fieldset className="astrology-plans"><legend>Choose consultation duration</legend>
       {plans.map(p => <label className={p.minutes === minutes ? 'astrology-plan selected' : 'astrology-plan'} key={p.minutes}>
@@ -57,13 +63,15 @@ export default function AstrologyBooking() {
       <label>Birthplace<input name="birthplace" required maxLength={150} placeholder="City or town, state and country" /></label>
       <label>Birth time (local to birthplace)<input name="birthtime" type="time" required={!unknownTime} disabled={unknownTime} /></label>
       <label className="astrology-check"><input type="checkbox" checked={unknownTime} onChange={e => setUnknownTime(e.target.checked)} /><span>I do not know my birth time</span></label>
+      <label>Consultation topic<select name="topic" defaultValue=""><option value="">General consultation / choose a topic</option>{astrologyTopics.map(topic => <option key={topic.id} value={topic.id}>{topic.te} / {topic.en}</option>)}</select></label>
+      <p className="astrology-note">Health and parenthood consultations offer spiritual guidance and do not replace medical advice or treatment.</p>
       <label>Your astrology query<textarea name="query" required maxLength={1500} rows={4} placeholder="What would you like to discuss with the astrologer?" /></label>
-      <label>Preferred call time (optional)<input name="time" maxLength={150} placeholder="For example: tomorrow, 6–8 PM IST" /></label>
+      <label>Preferred call time (optional)<input name="time" maxLength={150} placeholder="For example: tomorrow, 6–8 PM IST (hours: 2–9 PM)" /></label>
       <label>UPI transaction reference (optional)<input name="reference" maxLength={80} /></label>
       <label className="astrology-check"><input type="checkbox" checked={paid} onChange={e => setPaid(e.target.checked)} /><span>I have paid ₹{plan.amount.toLocaleString('en-IN')}. KKC will verify my payment.</span></label>
       <p className="astrology-note">Your query is shared with KKC only when you press Send in WhatsApp. Payment and call slots require confirmation from KKC.</p>
       <button className="primary-btn" type="submit">Prepare WhatsApp enquiry</button>
-      {ready && <div role="status">{ready.startsWith('https:') ? <><p>Your enquiry is ready. Send it to KKC to request your call.</p><a className="primary-btn" href={ready} target="_blank" rel="noopener noreferrer">Open WhatsApp &amp; send enquiry</a></> : <p>{ready}</p>}</div>}
+      {ready && <div role="status">{ready.startsWith('https:') ? <><p>Your enquiry is ready. Send it to KKC to request your call.</p>{customer && <AstrologyCustomerRecord key={ready} record={customer} whatsappUrl={ready} />}</> : <p>{ready}</p>}</div>}
     </form>
     <aside className="astrology-payment" aria-label="Consultation payment">
       <h4>Consultation fee: ₹{plan.amount.toLocaleString('en-IN')}</h4>

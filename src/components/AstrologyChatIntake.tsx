@@ -1,3 +1,5 @@
+import AstrologyCustomerRecord from './AstrologyCustomerRecord';
+import { astrologyTopics, findAstrologyTopic, astrologyTopicLabel, astrologyTopicQuery } from '../data/astrologyTopics';
 import { astrologyNameIcon, astrologyBirthDate, astrologyBirthTime } from '../lib/astrologyMessage';
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
@@ -15,6 +17,8 @@ type Details = Record<typeof questions[number]['key'], string>;
 export default function AstrologyChatIntake({ initialQuery = '', onPayment }: { initialQuery?: string; onPayment: () => void }) {
   const [step, setStep] = useState(0);
   const [details, setDetails] = useState<Details>({ name: '', gender: '', phone: '', dob: '', place: '', time: '', query: initialQuery });
+  const [topic, setTopic] = useState(findAstrologyTopic(initialQuery)?.id || '');
+  useEffect(() => { setTopic(findAstrologyTopic(initialQuery)?.id || ''); setDetails(d => ({ ...d, query: initialQuery })); }, [initialQuery]);
   const [minutes, setMinutes] = useState(10);
   const [unknown, setUnknown] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -36,6 +40,7 @@ export default function AstrologyChatIntake({ initialQuery = '', onPayment }: { 
     '📅 *Date of birth:* ' + astrologyBirthDate(details.dob),
     '📍 *Birthplace:* ' + details.place,
     '🕒 *Birth time:* ' + (unknown ? 'Unknown' : astrologyBirthTime(details.time)),
+    '✦ *Consultation topic:* ' + astrologyTopicLabel(topic),
     '💬 *Query:* ' + details.query, '',
     '☎️ *Call:* ' + minutes + ' minutes',
     '💳 *Fee:* ₹' + amount.toLocaleString('en-IN'),
@@ -46,6 +51,7 @@ export default function AstrologyChatIntake({ initialQuery = '', onPayment }: { 
     <progress max={totalSteps} value={step + 1} aria-label="Consultation details progress" />
     <p className="chat-privacy">Details stay in this chat until you choose to send them to KKC on WhatsApp.</p>
     {question ? <form onSubmit={next}>
+      {question.key === "query" && <div className="chat-topic-choice"><label htmlFor="chat-topic">Choose a consultation topic</label><select id="chat-topic" value={topic} onChange={e => { setTopic(e.target.value); setDetails(d => ({ ...d, query: astrologyTopicQuery(e.target.value) })); }}><option value="">General / another question</option>{astrologyTopics.map(item => <option key={item.id} value={item.id}>{item.te} / {item.en}</option>)}</select>{["health", "parenthood"].includes(topic) && <p className="chat-privacy">Spiritual guidance does not replace medical advice or treatment.</p>}</div>}
       <label htmlFor="chat-birth-field"><strong>{question.label}</strong></label>
       <p>{question.hint}</p>
       {question.key === "gender" ? <select id="chat-birth-field" required value={details.gender} onChange={e => setDetails(d => ({ ...d, gender: e.target.value }))}><option value="">Choose an option</option><option value="Male">👨 Male</option><option value="Female">👩 Female</option><option value="Prefer not to say">👤 Prefer not to say</option></select> : <input ref={input} id="chat-birth-field" key={question.key} type={question.type} pattern={question.key === "phone" ? "[+]?[0-9]{10,15}" : undefined} required={!(question.key === 'time' && unknown)}
@@ -60,9 +66,9 @@ export default function AstrologyChatIntake({ initialQuery = '', onPayment }: { 
       <div className="chat-step-actions"><button type="button" onClick={() => setStep(questions.length - 1)}>Back</button><button className="chat-next" type="button" onClick={() => setStep(questions.length + 1)}>Review details →</button></div>
     </div> : <div>
       <h4>Review your details</h4>
-      <dl className="chat-details">{questions.map(q => <div key={q.key}><dt>{q.key === 'time' ? 'Birth time' : q.key === 'dob' ? 'Date of birth' : q.key === 'place' ? 'Birthplace' : q.key === 'name' ? 'Name' : q.key === 'gender' ? 'Gender' : q.key === 'phone' ? 'WhatsApp number' : 'Your query'}</dt><dd>{q.key === 'time' && unknown ? 'Unknown' : details[q.key]}</dd></div>)}<div><dt>Call fee</dt><dd>{minutes} minutes · ₹{amount.toLocaleString('en-IN')}</dd></div></dl>
-      <p>KKC will confirm the call slot and verify payment. No payment has been confirmed by this chat.</p>
-      <a className="chat-send-whatsapp" href={'https://wa.me/917981041123?text=' + encodeURIComponent(text)} target="_blank" rel="noopener noreferrer">Send details on WhatsApp ↗</a>
+      <dl className="chat-details"><div><dt>Consultation topic</dt><dd>{astrologyTopicLabel(topic)}</dd></div>{questions.map(q => <div key={q.key}><dt>{q.key === 'time' ? 'Birth time' : q.key === 'dob' ? 'Date of birth' : q.key === 'place' ? 'Birthplace' : q.key === 'name' ? 'Name' : q.key === 'gender' ? 'Gender' : q.key === 'phone' ? 'WhatsApp number' : 'Your query'}</dt><dd>{q.key === 'time' && unknown ? 'Unknown' : details[q.key]}</dd></div>)}<div><dt>Call fee</dt><dd>{minutes} minutes · ₹{amount.toLocaleString('en-IN')}</dd></div></dl>
+      <p>Consultation hours: 2 PM–9 PM IST. KKC will confirm the call slot and verify payment.</p>
+      <AstrologyCustomerRecord record={{ name: details.name, gender: details.gender, phone: details.phone, dob: details.dob, birthplace: details.place, birthtime: unknown ? "Unknown" : details.time, topic, query: details.query, minutes }} whatsappUrl={"https://wa.me/917981041123?text=" + encodeURIComponent(text)} />
       <button className="chat-edit-details" type="button" onClick={() => setStep(0)}>Edit details</button>
       <a className="chat-payment-link" href="#astrology-booking" onClick={onPayment}>View QR &amp; payment options below ↓</a>
     </div>}

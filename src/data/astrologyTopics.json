@@ -1,0 +1,125 @@
+[
+  {
+    "id": "horoscope",
+    "te": "పూర్తి జాతకం",
+    "en": "Full horoscope",
+    "description": "Discuss your birth chart and the areas of life you want to understand.",
+    "keywords": [
+      "poorthi",
+      "purthi",
+      "jaathakam",
+      "jathakam",
+      "horoscope",
+      "birth chart",
+      "పూర్తి",
+      "జాతకం"
+    ]
+  },
+  {
+    "id": "education",
+    "te": "విద్య",
+    "en": "Education",
+    "description": "Bring questions about studies, learning and educational choices.",
+    "keywords": [
+      "vidya",
+      "education",
+      "studies",
+      "study",
+      "విద్య"
+    ]
+  },
+  {
+    "id": "marriage",
+    "te": "వివాహ సమస్యలు",
+    "en": "Marriage concerns",
+    "description": "Discuss your questions about marriage and relationships.",
+    "keywords": [
+      "vivaha",
+      "marriage",
+      "wedding",
+      "relationship",
+      "వివాహ"
+    ]
+  },
+  {
+    "id": "business",
+    "te": "వ్యాపార అభివృద్ధి",
+    "en": "Business growth",
+    "description": "Discuss business-related questions and plans.",
+    "keywords": [
+      "vyapaara",
+      "vyapara",
+      "business",
+      "వ్యాపార"
+    ]
+  },
+  {
+    "id": "overseas",
+    "te": "విదేశీ యానం",
+    "en": "Overseas travel",
+    "description": "Share questions about travelling or moving abroad.",
+    "keywords": [
+      "videshi",
+      "videsi",
+      "overseas",
+      "abroad",
+      "foreign",
+      "విదేశ"
+    ]
+  },
+  {
+    "id": "health",
+    "te": "ఆరోగ్య సమస్యలు",
+    "en": "Health concerns",
+    "description": "Discuss health-related spiritual concerns alongside appropriate medical care.",
+    "keywords": [
+      "aarogya",
+      "arogya",
+      "health",
+      "ఆరోగ్య"
+    ]
+  },
+  {
+    "id": "home",
+    "te": "సొంత ఇంటి కోసం",
+    "en": "Owning a home",
+    "description": "Discuss your questions about buying or building your own home.",
+    "keywords": [
+      "sontha",
+      "sonta",
+      "own home",
+      "own house",
+      "buy a home",
+      "buy a house",
+      "సొంత",
+      "స్వంత"
+    ]
+  },
+  {
+    "id": "property",
+    "te": "స్థిరాస్తి సమస్యలు",
+    "en": "Property concerns",
+    "description": "Bring questions about land, property and real estate.",
+    "keywords": [
+      "sthirasthi",
+      "sthirasti",
+      "property",
+      "real estate",
+      "స్థిరాస్తి"
+    ]
+  },
+  {
+    "id": "parenthood",
+    "te": "సంతాన సమస్యలు",
+    "en": "Children & parenthood",
+    "description": "Share your questions about children and parenthood.",
+    "keywords": [
+      "santhana",
+      "santana",
+      "children",
+      "parenthood",
+      "fertility",
+      "సంతాన"
+    ]
+  }
+]

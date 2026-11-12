@@ -1,0 +1,18 @@
+<!doctype html><html><head><base target="_top"></head><body><script>
+(function() {
+  var origin = <?!= JSON.stringify(parentOrigin) ?>;
+  var channel = <?!= JSON.stringify(channel) ?>;
+  var busy = false;
+  window.addEventListener('message', function(event) {
+    if (event.origin !== origin || !event.data || event.source !== window.top || event.data.channel !== channel || event.data.type !== 'kkc-astro-save' || busy) return;
+    busy = true;
+    google.script.run.withSuccessHandler(function(result) {
+      window.top.postMessage({type:'kkc-astro-result',channel:channel,ok:result.ok,reference:result.reference}, origin);
+    }).withFailureHandler(function(error) {
+      busy = false;
+      window.top.postMessage({type:'kkc-astro-result',channel:channel,ok:false,error:error.message || 'Could not save enquiry.'}, origin);
+    }).saveKkcAstrologyCustomer(event.data.payload);
+  });
+  window.top.postMessage({type:'kkc-astro-ready',channel:channel}, origin);
+})();
+</script></body></html>
