@@ -46,3 +46,36 @@ The browser waits for server confirmation before showing a reference. On failure
 Earlier packages suggested adding the tracker to the existing event project. **Do not follow that approach.** Use this standalone package instead. Do not redeploy or edit Karthika Masam for this task. Existing Karthika website URLs are untouched.
 
 This local code does not create or deploy private Google Sheets itself. Live saving remains unavailable until the new astrology deployment URL is configured. Local mocked browser and server tests are separate from live Google delivery.
+
+## Customer feedback / reviews
+
+The website feedback form is at **https://www.kkcorg.com/#customer-review**. After a completed consultation, manually send this link from the KKC WhatsApp number:
+
+> Thank you for choosing KKC. How was your consultation? Please share your honest feedback: https://www.kkcorg.com/#customer-review
+
+No automated WhatsApp messages are sent. Ask all customers for honest feedback, regardless of their experience.
+
+### Activate reviews
+
+Update BOTH Code.gs (from AstrologyTracking.gs) and AstrologyTracker.html in the existing standalone astrology project. Do this separately for local and production. Keep existing script properties and deployment URLs. Use **Deploy > Manage deployments > Edit > New version > Deploy** after saving. Do not modify the Karthika project.
+
+The first successful review creates **CustomerReviews_local** or **CustomerReviews_prod** in the corresponding astrology spreadsheet. It records name, rating, comment, optional unverified enquiry reference, permission to publish and moderation status. No phone or birth details are requested. Download this tab through Sheets for Excel/PDF.
+
+Every review starts **Pending - not published**. Permission to publish is unchecked by default and separate from required storage consent. The updated public review section displays only reviews with permission **Yes** and moderation status **Approved**. Review feedback for private details before approval. Reviews are not automatically verified as completed consultations.
+
+Test locally first: submit one labelled test review, confirm its returned ASTRO-REVIEW reference in CustomerReviews_local, then activate the production deployment and frontend. A failed save must not be treated as a received review.
+
+### Display approved reviews on the website
+
+A **Customer Experiences** section now appears below Astrology at **/#customer-experiences**. It reads only the public first name, rating and feedback through the astrology deployment. No private sheet is published or shared.
+
+To show a review, open **CustomerReviews_local** (testing) or **CustomerReviews_prod** (live):
+1. Confirm **Permission to publish first name and feedback** is **Yes** (column H). Do not change a customer's No to Yes.
+2. Review the feedback in column F for personal details and suitability, regardless of the star rating.
+3. Check **Public first name** in column K. Only its first word is displayed; the private full name is never used as fallback.
+4. Change **Moderation status** in column I from Pending - not published to exactly **Approved**.
+5. Refresh the website and scroll to Customer Experiences. The newest 20 eligible reviews appear. Change status back to Pending (or remove consent on customer request) to hide a review on subsequent loads.
+
+With the updated deployment AND frontend, Approved + Yes enables public display. Existing rows stay pending and private.
+
+Update BOTH Apps Script files and deploy a New version in each astrology project before using public reviews. The URL stays the same. Karthika scripts are unchanged. New reviews do not appear immediately after submission; approval is required.

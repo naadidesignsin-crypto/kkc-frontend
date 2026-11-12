@@ -107,3 +107,60 @@ function saveKkcAstrologyCustomer(input) {
     return {ok:true,reference:reference,environment:config.environment};
   } finally { lock.releaseLock(); }
 }
+
+function saveKkcCustomerReview(input) {
+  var config = kkcAstrologyConfiguration_();
+  if (!input || input.consent !== true) throw new Error('Please agree to saving your feedback.');
+  if (input.environment !== config.environment) throw new Error('The local/prod review configuration does not match.');
+  if (input.kind !== 'review' || !/^[a-zA-Z0-9-]{20,80}$/.test(input.requestId || '') || input.website) throw new Error('Invalid review. Please reopen the feedback page.');
+  var rating = Number(input.rating);
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) throw new Error('Choose a rating from 1 to 5.');
+  var name = typeof input.name === 'string' ? input.name.trim() : '';
+  var comment = typeof input.comment === 'string' ? input.comment.trim() : '';
+  var reference = typeof input.enquiryReference === 'string' ? input.enquiryReference.trim() : '';
+  if (!name || name.length > 120 || comment.length < 5 || comment.length > 1500) throw new Error('Complete your name and feedback (5 to 1500 characters).');
+  if (reference && !/^ASTRO-[A-Z0-9-]{4,34}$/.test(reference)) throw new Error('Check your optional ASTRO enquiry reference, or leave it blank.');
+  var safe = function(value) { return /^[=+\-@\t\r\n]/.test(value) ? "'" + value : value; };
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) throw new Error('Reviews are busy. Please retry.');
+  try {
+    var book = SpreadsheetApp.openById(config.sheetId);
+    var tab = 'CustomerReviews_' + config.environment;
+    var sheet = book.getSheetByName(tab);
+    if (!sheet) sheet = book.insertSheet(tab);
+    if (sheet.getLastRow() === 0) {
+      sheet.getRange(1, 1, 1, 11).setValues([['Submitted at (IST)', 'Review reference', 'Request ID', 'Name (private)', 'Rating', 'Feedback', 'Enquiry reference (unverified)', 'Permission to publish first name and feedback', 'Moderation status', 'Environment', 'Public first name']]);
+      sheet.setFrozenRows(1);
+      sheet.getRange(1, 1, 1, 11).setFontWeight('bold');
+    }
+    var last = sheet.getLastRow();
+    if (last > 1) {
+      var previous = sheet.getRange(2, 2, last - 1, 2).getDisplayValues();
+      for (var i = 0; i < previous.length; i++) if (previous[i][1] === input.requestId) return {ok:true, reference:previous[i][0], environment:config.environment};
+    }
+    var id = 'ASTRO-REVIEW-' + Utilities.getUuid().replace(/-/g, '').slice(0,12).toUpperCase();
+    sheet.getRange(last + 1, 1, 1, 11).setValues([[Utilities.formatDate(new Date(), 'Asia/Kolkata', 'yyyy-MM-dd HH:mm:ss'), id, input.requestId, safe(name), rating, safe(comment), reference, input.publishConsent === true ? 'Yes' : 'No', 'Pending - not published', config.environment, safe(name.split(/\s+/)[0])]]);
+    return {ok:true, reference:id, environment:config.environment};
+  } finally { lock.releaseLock(); }
+}
+
+function getKkcPublishedReviews(input) {
+  var config = kkcAstrologyConfiguration_();
+  if (!input || input.environment !== config.environment) throw new Error('The local/prod review configuration does not match.');
+  var sheet = SpreadsheetApp.openById(config.sheetId).getSheetByName('CustomerReviews_' + config.environment);
+  if (!sheet || sheet.getLastRow() < 2) return {ok:true, reviews:[]};
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 11).getDisplayValues();
+  var reviews = [];
+  for (var i = rows.length - 1; i >= 0 && reviews.length < 20; i--) {
+    var row = rows[i];
+    if (row[7] !== 'Yes' || String(row[8]).trim().toLowerCase() !== 'approved' || row[9] !== config.environment) continue;
+    var rating = Number(row[4]);
+    // Public name is explicitly selected by the organiser. Never fall back to the private full name.
+    var name = String(row[10] || '').trim().replace(/^'(?=[=+@-])/, '').split(/\s+/)[0];
+    var comment = String(row[5] || '').trim().replace(/^'(?=[=+@-])/, '');
+    if (!name || name.length > 120 || !comment || comment.length > 1500 || !Number.isInteger(rating) || rating < 1 || rating > 5) continue;
+    reviews.push({name:name, rating:rating, comment:comment});
+  }
+  // Return only the public display fields. Never expose the full row, request ID or enquiry reference.
+  return {ok:true, reviews:reviews};
+}

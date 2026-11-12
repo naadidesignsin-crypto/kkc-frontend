@@ -1,0 +1,82 @@
+.professional-layout .hero { min-height: 0; padding: 28px 0 18px; display: block; }
+.page-welcome { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.page-welcome h1 { font-size: clamp(25px, 3vw, 38px); line-height: 1.2; margin: 6px 0 0; letter-spacing: -.03em; }
+.page-welcome .eyebrow { margin: 0; }
+.page-welcome > p { max-width: 350px; font-size: 14px; line-height: 1.6; color: #bbb; margin: 0; }
+.professional-layout .astrology-spotlight { margin: 0; padding: 20px 24px; }
+.page-workspace { padding-bottom: 28px; }
+.page-section-nav { display: flex; gap: 6px; border-bottom: 1px solid #333; padding: 0 0 10px; margin-bottom: 22px; }
+.page-section-nav a { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 46px; text-align: center; padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; color: #bbb; border: 1px solid transparent; }
+.page-section-nav a[aria-current] { color: #101010; background: #eee; }
+.page-section-nav a:hover:not([aria-current]) { background: #191919; color: #fff; }
+.page-section-nav a:focus-visible, .page-disclosure summary:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.page-panel[hidden] { display: none; }
+.page-panel > .events-section, .page-panel .content-section, .page-panel .planet-section, .page-panel .seo-discovery, .page-panel .video-gallery-section { padding: 12px 0 18px; }
+.page-panel .section-wrap { width: 100%; max-width: none; margin: 0; }
+.page-panel .section-heading { margin-bottom: 20px; }
+.page-panel .section-heading h2 { font-size: clamp(23px, 2.8vw, 34px); margin: 6px 0 10px; }
+.page-panel .section-heading > p { margin: 6px 0 14px; }
+.page-panel .published-reviews { margin: 0; max-width: none; padding: 12px 0 20px; }
+.page-panel .customer-reviews { margin: 0; max-width: none; padding: 20px; border: 0; }
+.page-panel .astrology-booking { margin-top: 0; border: 0; padding: 10px; }
+.page-disclosure { border: 1px solid #3c3c3c; border-radius: 12px; background: #0d0d0d; margin-top: 14px; overflow: clip; }
+.page-disclosure > summary { cursor: pointer; padding: 16px 20px; font-size: 15px; font-weight: 600; }
+.page-disclosure[open] > summary { border-bottom: 1px solid #333; }
+.page-disclosure-body { padding: 18px; }
+.page-panel [id] { scroll-margin-top: 110px; }
+.professional-layout .page-panel .ongoing-event-card { margin-top: 0; }
+@media (min-width: 900px) {
+  .professional-layout .page-panel .event-slide-image-wrap { min-height: 0; height: 390px; }
+  .professional-layout .page-panel .event-slide-image { min-height: 0; height: 100%; max-height: 390px; object-fit: contain; }
+  .professional-layout .page-panel .ongoing-event-content { padding: 22px; }
+}
+@media (max-width: 680px) {
+  .professional-layout .hero { padding: 18px 0 14px; }
+  .page-welcome { display: block; margin-bottom: 16px; }
+  .page-welcome > p { display: none; }
+  .professional-layout .astrology-spotlight { padding: 16px; }
+  .page-section-nav { gap: 4px; margin-bottom: 14px; }
+  .page-section-nav a { padding: 8px 5px; font-size: 12px; min-height: 48px; }
+  .page-disclosure > summary { padding: 14px; }
+  .page-disclosure-body { padding: 12px; }
+  .professional-layout .page-panel .event-slide-image-wrap { height: 260px; min-height: 0; }
+  .professional-layout .page-panel .event-slide-image { height: 100%; min-height: 0; object-fit: contain; }
+  .professional-layout .page-panel .ongoing-event-content { padding: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.professional-layout .karthika-section--notice { padding: 0; margin: 0; }
+.professional-layout .page-panel .events-section { height: auto; min-height: 0; }
+.professional-layout .page-panel .events-section > .section-wrap { height: auto; }
+
+.professional-layout .navbar { padding: 10px 0; gap: 20px; min-height: 72px; }
+.professional-layout .navbar .brand-logo { width: 46px; height: 46px; }
+.professional-layout .navbar .brand-text { font-size: 13px; letter-spacing: .02em; }
+.professional-layout .navbar .nav-icon-frame { display: none; }
+.professional-layout .navbar .nav-links { gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.professional-layout .navbar .nav-link { font-size: 13px; padding: 10px 12px; gap: 0; min-height: 40px; }
+.page-disclosure h2 { font-size: clamp(22px, 2.4vw, 30px); line-height: 1.3; }
+.page-disclosure h3 { font-size: 21px; line-height: 1.4; }
+@media (max-width: 760px) {
+  .professional-layout .navbar { flex-wrap: wrap; gap: 4px; }
+  .professional-layout .navbar .brand { width: 100%; }
+  .professional-layout .navbar .nav-links { width: 100%; justify-content: flex-start; flex-wrap: wrap; overflow: visible; }
+  .professional-layout .navbar .nav-link { padding: 8px; font-size: 12px; }
+  .professional-layout .navbar .brand-text { font-size: 11px; }
+}
+
+.professional-layout #home { scroll-margin-top: 90px; }
+@media (max-width: 760px) {
+  .professional-layout .navbar .nav-links { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; scrollbar-width: thin; }
+  .professional-layout .navbar .nav-link { flex: 0 0 auto; white-space: nowrap; }
+  .professional-layout #home { scroll-margin-top: 130px; }
+  .professional-layout .page-panel .ongoing-event-content h3 { font-size: 25px; margin: 8px 0; line-height: 1.25; }
+  .professional-layout .page-panel .ongoing-event-content > p { font-size: 14px; line-height: 1.6; }
+  .professional-layout .page-panel .section-heading > p { font-size: 14px; line-height: 1.5; }
+  .professional-layout .page-panel .ongoing-event-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .professional-layout .page-panel .ongoing-event-actions .primary-btn { grid-column: 1 / -1; grid-row: 1; }
+  .professional-layout .page-panel .ongoing-event-actions a, .professional-layout .page-panel .ongoing-event-actions button { min-height: 42px; padding: 10px; font-size: 12px; width: 100%; }
+  .professional-layout .page-panel .event-slider-controls { flex-direction: row; flex-wrap: nowrap; gap: 10px; margin-top: 18px; padding-top: 16px; }
+  .professional-layout .page-panel .event-slider-btn { width: auto; flex: 0 0 auto; padding: 8px 12px; min-height: 38px; font-size: 12px; }
+  .professional-layout .page-panel .event-slider-dots { gap: 6px; flex: 1; justify-content: center; flex-wrap: wrap; }
+}

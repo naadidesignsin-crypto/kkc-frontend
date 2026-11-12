@@ -44,7 +44,7 @@ function VideoGallery() {
   };
 
   return (
-    <section className="video-slider-section" id="events">
+    <section className="video-slider-section" id="event-highlights">
       <div className="section-wrap">
         <div className="section-heading compact-heading video-slider-heading">
           <p className="eyebrow">{galleryContent.eyebrow}</p>

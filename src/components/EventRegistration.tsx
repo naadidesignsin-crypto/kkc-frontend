@@ -8,7 +8,7 @@ import { getGoogleRegistrationUrl, getRegistrationWebAppUrl, selectRegistrationF
 
 const empty = { gothram: '', fullName: '', mobile: '', email: '', address: '', note: '' };
 const noticeKey = 'kkc.karthika-notice.v1';
-const registrationRequested = new URLSearchParams(window.location.search).get('register') === 'karthika-2026';
+const registrationRequested = new URLSearchParams(window.location.search).get('register') === 'karthika-2026' || window.location.hash === '#karthika-registration';
 const invitationRequested = new URLSearchParams(window.location.search).get('invite') === 'karthika-2026';
 const configuredForm = selectRegistrationFormUrl(isLocalRegistration, {
   local: import.meta.env.VITE_REGISTRATION_FORM_URL_LOCAL,
@@ -24,7 +24,7 @@ const webAppUrl = validatedWebAppUrl ? (() => { const url = new URL(validatedWeb
 const googleFormUrl = configuredWebApp ? null : getGoogleRegistrationUrl(configuredForm);
 const sharedRegistrationConfigured = !!(configuredWebApp || configuredForm);
 
-export default function EventRegistration({ presentation = 'website', onRegister }: { presentation?: 'website' | 'app'; onRegister?: () => void } = {}) {
+export default function EventRegistration({ presentation = 'website', onRegister }: { presentation?: 'website' | 'app' | 'notice'; onRegister?: () => void } = {}) {
   const [open, setOpen] = useState(() => registrationRequested || invitationRequested || getKarthikaStatus() !== 'Completed' || ['/telugu', '/english'].includes(window.location.pathname));
   const [showPosters, setShowPosters] = useState(!registrationRequested);
   const [posterIndex, setPosterIndex] = useState(0);
@@ -49,6 +49,13 @@ export default function EventRegistration({ presentation = 'website', onRegister
     if (onRegister) { dismiss(); onRegister(); return; }
     setShowPosters(false); setSuccess(null); setError(''); setOpen(true);
   }
+
+  useEffect(() => {
+    const registerFromLink = () => { if (location.hash === "#karthika-registration") beginRegistration(); };
+    registerFromLink();
+    window.addEventListener("hashchange", registerFromLink);
+    return () => window.removeEventListener("hashchange", registerFromLink);
+  }, []);
 
   function dismiss() {
     setOpen(false);
@@ -156,8 +163,8 @@ export default function EventRegistration({ presentation = 'website', onRegister
     {(['date', 'time', 'venue'] as const).map(key => <div key={key}><dt>{key}</dt><dd>{key === 'venue' ? <>{(['lingarchana', 'homam'] as const).map(type => <p key={type}><strong>{type === 'lingarchana' ? 'Daily Abhishekam / Maha Lingarchana' : 'Purusha Suktam / Rudra Homams'}</strong><br/><a href={karthikaVenues[type].mapUrl} target="_blank" rel="noopener noreferrer">{karthikaVenues[type].address} ↗</a></p>)}</> : event[key]}</dd></div>)}
   </dl>;
 
-  return <section className={presentation === "app" ? "karthika-section--app" : "karthika-section section-wrap"} id="karthika-registration" aria-labelledby="karthika-heading">
-    {presentation !== "app" && <article className="karthika-feature reveal-card">
+  return <section className={presentation === "website" ? "karthika-section section-wrap" : "karthika-section--" + presentation} id="karthika-registration" aria-labelledby={presentation === "website" ? "karthika-heading" : undefined} aria-label={presentation !== "website" ? "Karthika Masam registration" : undefined}>
+    {presentation === "website" && <article className="karthika-feature reveal-card">
       <div className="karthika-emblem" aria-hidden="true">✦</div>
       <div className="karthika-copy">
         <p className="eyebrow">{eventStatus} · Karthika Masam programme</p>
@@ -178,7 +185,7 @@ export default function EventRegistration({ presentation = 'website', onRegister
       </div>
     </article>}
 
-    {presentation !== "app" && !sharedRegistrationConfigured && <details className="registration-records">
+    {presentation === "website" && !sharedRegistrationConfigured && <details className="registration-records">
       <summary>Demo registrations &amp; PDF / Excel export <span>{rows.length} saved</span></summary>
       <div className="registration-records-body">
         <p>Records are available only in this browser on this device. Clearing browser data removes them. This demo panel has no admin sign-in.</p>

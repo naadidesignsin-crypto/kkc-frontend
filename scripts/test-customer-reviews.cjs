@@ -1,0 +1,30 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),path=require('path');
+const tabs={};let environment='local',counter=0;
+function sheet(){const rows=[];return {rows,getLastRow:()=>rows.length,setFrozenRows(){},getRange:(row,col,count,width)=>({setValues(values){values.forEach((r,i)=>{rows[row-1+i]??=[];r.forEach((v,j)=>rows[row-1+i][col-1+j]=v)});return this},setFontWeight(){return this},getDisplayValues(){return rows.slice(row-1,row-1+count).map(r=>r.slice(col-1,col-1+width).map(String))}})}}
+const ctx=vm.createContext({Date,Number,PropertiesService:{getScriptProperties:()=>({getProperty:k=>({KKC_ASTRO_SHEET_ID:'private-astro',KKC_ASTRO_ENVIRONMENT:environment})[k]})},SpreadsheetApp:{openById:()=>({getSheetByName:n=>tabs[n],insertSheet:n=>tabs[n]=sheet()})},LockService:{getScriptLock:()=>({tryLock:()=>true,releaseLock(){}})},Utilities:{formatDate:()=> '2026-11-12',getUuid:()=> 'abcdef123456'+String(++counter)}});
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../integrations/AstrologyTracking.gs'),'utf8'),ctx);
+const review={kind:'review',name:'Test Customer',rating:4,comment:'Helpful consultation',enquiryReference:'',publishConsent:false,consent:true,requestId:'review-test-request-000001',environment:'local'};
+const first=ctx.saveKkcCustomerReview(review);assert.match(first.reference,/^ASTRO-REVIEW-/);
+const rows=tabs.CustomerReviews_local.rows;assert.equal(rows.length,2);assert.equal(rows[1][7],'No');assert.equal(rows[1][8],'Pending - not published');assert.equal(rows[1][10],'Test');
+assert.equal(ctx.saveKkcCustomerReview(review).reference,first.reference);assert.equal(rows.length,2);
+for(const rating of [0,6,2.5])assert.throws(()=>ctx.saveKkcCustomerReview({...review,rating}),/rating/);
+assert.throws(()=>ctx.saveKkcCustomerReview({...review,consent:false}),/agree/);
+assert.throws(()=>ctx.saveKkcCustomerReview({...review,environment:'prod'}),/configuration/);
+assert.throws(()=>ctx.saveKkcCustomerReview({...review,enquiryReference:'invalid'}),/reference/);
+ctx.saveKkcCustomerReview({...review,requestId:'review-test-request-000002',name:'=formula',comment:'+formula text',publishConsent:true});
+assert.equal(rows[2][7],'Yes');assert.equal(rows[2][3],"'=formula");assert.equal(rows[2][5],"'+formula text");
+environment='prod';ctx.saveKkcCustomerReview({...review,environment:'prod',requestId:'review-test-request-000003'});
+assert.equal(tabs.CustomerReviews_prod.rows.length,2);assert.equal(tabs.CustomerReviews_local.rows.length,3);
+assert.ok(!Object.keys(tabs).some(n=>n.startsWith('AstrologyCustomers')));
+console.log('PASS reviews: separate local/prod tabs, private default, consent, rating validation, safe text, unverified reference and duplicate retry.');
+
+assert.equal(ctx.getKkcPublishedReviews({environment:"prod"}).reviews.length,0);
+const prodRows=tabs.CustomerReviews_prod.rows;
+prodRows[1][8]="Approved";assert.equal(ctx.getKkcPublishedReviews({environment:"prod"}).reviews.length,0,"Approval alone cannot override missing permission");
+prodRows[1][7]="Yes";prodRows[1][10]="Public Name";
+let published=ctx.getKkcPublishedReviews({environment:"prod"}).reviews;
+assert.equal(published.length,1);assert.equal(published[0].name,"Public");assert.deepEqual(Object.keys(published[0]).sort(),["comment","name","rating"]);
+prodRows[1][10]="";assert.equal(ctx.getKkcPublishedReviews({environment:"prod"}).reviews.length,0,"Never expose full name as fallback");
+prodRows[1][10]="Public";prodRows[1][8]="Pending - not published";assert.equal(ctx.getKkcPublishedReviews({environment:"prod"}).reviews.length,0);
+assert.throws(()=>ctx.getKkcPublishedReviews({environment:"local"}),/configuration/);
+console.log("PASS published reviews: permission AND approval, only public fields, first name, no private-name fallback and environment isolation.");
