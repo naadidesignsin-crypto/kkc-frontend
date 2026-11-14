@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Events from './Events';
+import DailyEventVideos from './DailyEventVideos';
 import Services from './Services';
 import PublishedReviews from './PublishedReviews';
 import CustomerReviews from './CustomerReviews';
@@ -44,6 +45,7 @@ export default function PageSections() {
     </nav>
     <div className="page-panel" hidden={active !== 'events'}>
       <Events />
+      <ExpandablePanel title="Daily Karthika Masam videos · KKCEvents" targets={['daily-events-videos']}><DailyEventVideos /></ExpandablePanel>
       <ExpandablePanel title="Programme dates, venues & directions"><EventSeoLinks /></ExpandablePanel>
       <ExpandablePanel title="Watch KKC event highlights" targets={['event-highlights']}><VideoGallery /></ExpandablePanel>
     </div>
